@@ -18,4 +18,10 @@ class LocationPages
     def popUpSuccess
         return @driver.find_element(:xpath, "//div[@class='toast alert-box success active ember-view']")
     end
+    def btnSettingsLastNavPage
+        return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/a")
+    end
+    def inputDescriptionPage
+        return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div[2]/div/div[3]/input")
+    end
 end

@@ -4,7 +4,11 @@ require_relative "../../PageObjects/Common/Auth.rb"
 require_relative "../../PageObjects/Client/Clients.rb"
 require_relative "../../PageObjects/Location/LocationPages.rb"
 
-#GO TO THIS PAGE
+#CHANGEABLE VARIABLES
+@url = 'https://g5-cms-5hq9qn3wg-javier-and-da.herokuapp.com/'
+@newPageName = 'New Page Test'
+
+#SETUP
 puts "Starting to Add New Page"
 wait = Selenium::WebDriver::Wait.new(:timeout => 15)
 driver = Selenium::WebDriver.for :chrome
@@ -12,7 +16,7 @@ driver.manage.window.maximize
 
 #LOGIN PAGE
 auth = LoginPage.new(driver)
-auth.goToPage('https://g5-cms-5hq9qn3wg-javier-and-da.herokuapp.com/')
+auth.goToPage(@url)
 auth.typeEmail
 auth.typePassword
 auth.clickSubmit
@@ -26,9 +30,10 @@ sleep 5
 #LOCATIONS PAGES
 location = LocationPages.new(driver)
 location.btnCreateNewPage.click
-location.inputNewPageName.send_keys("New Page Test")
+location.inputNewPageName.send_keys(@newPageName)
 location.btnSave.click
 wait.until{location.popUpSuccess}
+puts "Success Popup Shown"
 driver.navigate.refresh
 wait.until {/New Page Test/.match(driver.page_source)} ? (puts "New Page Test Added Successfully") : (puts "New Page Test Wasn't Found!")
 puts "TEST 1: FINISHED"
