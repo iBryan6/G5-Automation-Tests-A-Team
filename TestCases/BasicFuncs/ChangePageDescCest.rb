@@ -1,0 +1,5 @@
+require "rubygems"
+require "webdrivers"
+require_relative "../../PageObjects/Common/Auth.rb"
+require_relative "../../PageObjects/Client/Clients.rb"
+require_relative "../../PageObjects/Location/LocationPages.rb"
