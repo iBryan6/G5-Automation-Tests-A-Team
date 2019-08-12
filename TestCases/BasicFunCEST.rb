@@ -7,7 +7,9 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 #CHANGEABLE VARIABLES
 @url = 'https://g5-cms-5hq9qn3wg-javier-and-da.herokuapp.com/'
 @newPageName = 'New Page Test'
-@descNewValue = 'New Page Description'
+@pageNameNewValue = 'New Page Name'
+@pageTitleNewValue = 'New Page Title'
+@pageDescNewValue = 'New Page Description'
 
 #SETUP
 puts "Starting Basic Functionalities"
@@ -28,12 +30,12 @@ client.btnEditFirstLocation.click
 puts "Login Successfully"
 sleep 5
 
-#LOCATIONS PAGES
+#TEST CASES
 #TC1
 puts "***\nTC1: Starting..."
 location = LocationPages.new(driver)
 location.btnCreateNewPage.click
-location.inputNewPageName.send_keys(@newPageName)
+location.inputPageName.send_keys(@newPageName)
 location.btnSave.click
 puts "TC1: Adding New Page"
 wait.until{location.popUpSuccess}
@@ -46,20 +48,52 @@ sleep 5
 #TC2
 puts "***\nTC2: Starting..."
 location.btnSettingsLastNavPage.click
-location.inputDescriptionPage.clear
-location.inputDescriptionPage.send_keys(@descNewValue)
+location.inputPageName.clear
+location.inputPageName.send_keys(@pageNameNewValue)
+puts "TC2: Changing Page Name"
 location.btnSave.click
-puts "TC2: Changing Page Description"
 wait.until{location.popUpSuccess}
 puts "TC2: Success Popup Shown"
 location.btnSettingsLastNavPage.click
-@descriptionValue = location.inputDescriptionPage.attribute('value')
-(@descriptionValue == @descNewValue) ? (puts "TC2: Description changed successfully") : (puts "TC2: Description wasn't changed!!")
+@nameValue = location.inputPageName.attribute('value')
+(@nameValue == @pageNameNewValue) ? (puts "TC2: Name changed successfully") : (puts "TC2: Name wasn't changed!!")
 puts "TC2: Complete!"
+driver.navigate.refresh
 sleep 5
 
 #TC3
+puts "***\nTC3: Starting..."
+location.btnSettingsLastNavPage.click
+location.inputPageTitle.clear
+location.inputPageTitle.send_keys(@pageTitleNewValue)
+puts "TC3: Changing Page Title"
+location.btnSave.click
+wait.until{location.popUpSuccess}
+puts "TC3: Success Popup Shown"
+location.btnSettingsLastNavPage.click
+@titleValue = location.inputPageTitle.attribute('value')
+(@titleValue == @pageTitleNewValue) ? (puts "TC3: Title changed successfully") : (puts "TC3: Title wasn't changed!!")
+puts "TC3: Complete!"
+driver.navigate.refresh
+sleep 5
 
+#TC4
+puts "***\nTC4: Starting..."
+location.btnSettingsLastNavPage.click
+location.inputPageDescription.clear
+location.inputPageDescription.send_keys(@pageDescNewValue)
+puts "TC4: Changing Page Description"
+location.btnSave.click
+wait.until{location.popUpSuccess}
+puts "TC4: Success Popup Shown"
+location.btnSettingsLastNavPage.click
+@descriptionValue = location.inputPageDescription.attribute('value')
+(@descriptionValue == @pageDescNewValue) ? (puts "TC4: Description changed successfully") : (puts "TC4: Description wasn't changed!!")
+puts "TC4: Complete!"
+driver.navigate.refresh
+sleep 5
+
+#TC5
 
 driver.quit 
 
