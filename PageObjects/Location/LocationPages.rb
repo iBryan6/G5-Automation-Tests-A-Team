@@ -34,11 +34,11 @@ class LocationPages
     def btnSave
         return @driver.find_element(:xpath, "//div/button")
     end
-    def btnSettingsLastNavPage
+    def btnSettingsLastNavParentPage
         sleep 5
         return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/a")
     end
-    def btnSettingsFirstChildPage(pageNameNewValue)
+    def btnSettingsFirstNavChildPage(pageNameNewValue)
         sleep 5
         return @driver.find_element(:xpath, "//span[.='#{pageNameNewValue}']/following-sibling::span/a[' Settings ']")
     end
@@ -54,8 +54,21 @@ class LocationPages
         return @driver.find_element(:xpath, "//div/div/div/ul/li[2]/span")
     end
 
+    #TOOGLES/SWITCHES
+    def tooglePageStatus
+        return @driver.find_element(:xpath, "//div[2]/div/p/div/label/span[2]")
+    end
+
     #POPUPS
     def popUpSuccess
         return @driver.find_element(:xpath, "//div[@class='toast alert-box success active ember-view']")
+    end
+
+    #OTHERS
+    def disabledPageStatusLastNavPage
+        return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/span")        
+    end
+    def noIndexPageStatusLastNavPage
+        return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/span")        
     end
 end

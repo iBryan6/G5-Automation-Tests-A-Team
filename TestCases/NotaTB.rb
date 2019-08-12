@@ -30,9 +30,7 @@ wait.until{client.btnEditFirstLocation}
 client.btnEditFirstLocation.click
 puts "Login Successfully"
 sleep 5
+location = LocationPages.new(driver)
 
-
-driver.quit 
-
-
+#TESTS
 
