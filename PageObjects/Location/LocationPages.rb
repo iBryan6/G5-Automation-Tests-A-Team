@@ -51,6 +51,7 @@ class LocationPages
         return @driver.find_element(:xpath, "//span[.='#{pageNameNewValue}']/following-sibling::span/a[' Settings ']")
     end
     def btnImportLayout
+        sleep 5
         return @driver.find_element(:xpath, "//a[@class='import-layout btn green ']")
     end
     def btnModalConfirm
