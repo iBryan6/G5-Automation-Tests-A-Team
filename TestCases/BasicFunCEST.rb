@@ -126,7 +126,7 @@ wait.until{location.popUpSuccess}
 puts "TC6: Success Popup Shown"
 driver.navigate.refresh
 sleep 5
-(location.disabledPageStatusLastNavPage.text.include?('Disabled Page')) ? (puts "TC6: Page was Disabled Sucessfully") : (puts "TC6 ERROR: Page wasn't Disabled")
+(location.disabledPageStatusLastNavPage.text.include?('Disabled Page')) ? (puts "TC6: Page was Disabled Successfully") : (puts "TC6 ERROR: Page wasn't Disabled")
 location.btnSettingsLastNavParentPage.click
 location.tooglePageStatus.click
 location.btnSave.click
@@ -135,9 +135,30 @@ wait.until{location.popUpSuccess}
 puts "TC6: Success Popup Shown"
 driver.navigate.refresh
 sleep 5
-(location.disabledPageStatusLastNavPage.text.include?('Disabled Page')) ? (puts "TC6 ERROR: Page wasn't Enabled Sucessfully") : (puts "TC6: Page was Enabled Sucessfully")
+(location.disabledPageStatusLastNavPage.text.include?('Disabled Page')) ? (puts "TC6 ERROR: Page wasn't Enabled Correctly") : (puts "TC6: Page was Enabled Successfully")
 
-driver.quit 
+#TC7
+puts "***\nTC7: Starting..."
+location.btnSettingsLastNavParentPage.click
+location.tabImportLayout.click
+sleep 5
+location.dropdownLocationImportLayout.click
+location.dropdownLocationImportLayoutFirstItem.click
+sleep 5
+location.dropdownLocationPageImportLayout.click
+location.dropdownLocationPageImportLayoutFirstItem.click
+sleep 5
+location.btnImportLayout.click
+puts "TC7: Importing Page Layout from the same CMS"
+sleep 3
+location.btnModalConfirm.click
+wait.until{location.popUpSuccess}
+puts "TC7: Success Popup Shown"
+driver.navigate.refresh
+sleep 5
+(location.importingPageStatusLastNavPage.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
+while (location.importingPageStatusLastNavPage.text.include?('Importing Layout...') == true) do
+    driver.navigate.refresh
+end
 
-
-
+driver.quit
