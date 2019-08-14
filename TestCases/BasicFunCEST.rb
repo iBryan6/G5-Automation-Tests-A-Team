@@ -13,19 +13,24 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 
 #SETUP
 driver = Selenium::WebDriver.for :chrome
-driver.manage.window.maximize
 wait = Selenium::WebDriver::Wait.new(:timeout => 20)
+auth = LoginPage.new(driver)
+location = LocationPages.new(driver,wait)
+client = ClientPage.new(driver,wait)
+driver.manage.window.maximize
 
 #LOGIN PAGE
-auth = LoginPage.new(driver)
 auth.goToPage(@url)
 auth.typeEmail
 auth.typePassword
 auth.clickSubmit
 
 #CLIENT LOCATION LIST
-client = ClientPage.new(driver)
 puts "Starting Basic Functionalities"
+while (client.is_element_present(:css, "spinner-wrapper") == true) do
+    sleep 5
+    puts "test"
+end
 wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
 client.btnEditFirstLocation.click
 puts "Login Successfully"
@@ -33,7 +38,6 @@ sleep 5
 
 #TEST CASES
 #TC1
-location = LocationPages.new(driver,wait)
 puts "***\nTC1: Starting..."
 location.btnCreateNewPage.click
 location.inputPageName.send_keys(@newPageName)
@@ -154,16 +158,19 @@ location.btnModalConfirm.click
 wait.until{location.popUpSuccess}
 puts "TC7: Success Popup Shown"
 location.refreshAndWait()
-(location.importingPageStatusLastNavPage.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
+(location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
 while (location.is_element_present(:css, "span.pulsate") == true) do
     driver.navigate.refresh
 end
 puts "TC7: Page Imported Successfully"
 puts "TC7: Complete!"
 location.refreshAndWait()
+sleep 10
 
 #TC8
 puts "***\nTC8: Starting..."
+driver.navigate.refresh
+sleep 5
 location.btnSettingsLastNavParentPage.click
 location.tabImportLayout.click
 location.checkboxRemoteCMS.click
@@ -182,12 +189,38 @@ location.btnModalConfirm.click
 wait.until{location.popUpSuccess}
 puts "TC8: Success Popup Shown"
 location.refreshAndWait()
-(location.importingPageStatusLastNavPage.text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
+(location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
 while (location.is_element_present(:css, "span.pulsate") == true) do
     driver.navigate.refresh
 end
 puts "TC8: Page Imported Successfully"
 puts "TC8: Complete!"
 location.refreshAndWait()
+
+#TC9
+puts "***\nTC9: Starting..."
+driver.navigate.to(@url)
+sleep 5
+client.tabCopyWebsites.click
+client.dropdownOneCopyWebsite.click
+client.dropdownOneCopyWebsiteFirstItem.click
+client.checkboxTargetFirstWebsite.click
+client.btnConfirmCopyWebsite.click
+client.btnModalConfirm.click
+puts "TC9: Copying entire Website to Local Website"
+wait.until{client.popUpSuccess}
+puts "TC9: Success Popup Shown"
+while (client.is_element_present(:css, "span.pulsate") == false) do
+    driver.navigate.refresh
+    sleep 5
+end
+(client.statusWebsite.text.include?('Updating')) ? (puts "TC9: Page is being copied") : (puts "TC9 ERROR: Page is not being copied!")
+while (client.is_element_present(:css, "span.pulsate") == true) do
+    driver.navigate.refresh
+    sleep 5
+end
+puts "TC9: Page Copied Successfully"
+puts "TC9: Complete!"
+client.refreshAndWait
 
 driver.quit

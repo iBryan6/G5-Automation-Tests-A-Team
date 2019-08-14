@@ -108,7 +108,7 @@ class LocationPages
     def statusIndividualLastNavPage
         return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/span")
     end
-    def importingPageStatusLastNavPage
+    def importingPageStatus
         return @driver.find_element(:css, "span.pulsate")
     end
     

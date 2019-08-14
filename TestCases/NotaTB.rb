@@ -25,7 +25,7 @@ auth.typePassword
 auth.clickSubmit
 
 #CLIENT LOCATION LIST
-client = ClientPage.new(driver)
+client = ClientPage.new(driver,wait)
 sleep 5
 wait.until{client.btnEditFirstLocation}
 client.btnEditFirstLocation.click
@@ -34,29 +34,27 @@ sleep 5
 location = LocationPages.new(driver,wait)
 
 #TESTS
-puts "***\nTC8: Starting..."
-location.btnSettingsLastNavParentPage.click
-location.tabImportLayout.click
-location.checkboxRemoteCMS.click
+puts "***\nTC9: Starting..."
+driver.navigate.to(@url)
 sleep 5
-location.dropdownOneImportLayout.click
-location.dropdownOneImportLayoutFirstItem.click
-sleep 5
-location.dropdownTwoPageImportLayout.click
-location.dropdownTwoPageImportLayoutFirstItem.click
-sleep 5
-location.dropdownThreePageImportLayout.click
-location.dropdownThreePageImportLayoutFirstItem.click
-location.btnImportLayout.click
-puts "TC8: Importing Page Layout from the a Remote CMS"
-location.btnModalConfirm.click
-wait.until{location.popUpSuccess}
-puts "TC8: Success Popup Shown"
-location.refreshAndWait()
-(location.importingPageStatusLastNavPage.text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
-while (location.is_element_present(:css, "span.pulsate") == true) do
+client.tabCopyWebsites.click
+client.dropdownOneCopyWebsite.click
+client.dropdownOneCopyWebsiteFirstItem.click
+client.checkboxTargetFirstWebsite.click
+client.btnConfirmCopyWebsite.click
+client.btnModalConfirm.click
+puts "TC9: Copying entire Website to Local Website"
+wait.until{client.popUpSuccess}
+puts "TC9: Success Popup Shown"
+while (client.is_element_present(:css, "span.pulsate") == false) do
     driver.navigate.refresh
+    sleep 5
 end
-puts "TC8: Page Imported Successfully"
-puts "TC8: Complete!"
-location.refreshAndWait()
+(client.statusWebsite.text.include?('Updating')) ? (puts "TC9: Page is being copied") : (puts "TC9 ERROR: Page is not being copied!")
+while (client.is_element_present(:css, "span.pulsate") == true) do
+    driver.navigate.refresh
+    sleep 5
+end
+puts "TC9: Page Copied Successfully"
+puts "TC9: Complete!"
+client.refreshAndWait
