@@ -4,8 +4,9 @@ require "webdrivers"
 
 class LocationPages
     #CONSTRUCTOR
-    def initialize(driver)
+    def initialize(driver,wait)
         @driver = driver
+        @wait = wait
     end
 
     #NAVIGATION PAGES
@@ -33,6 +34,11 @@ class LocationPages
     end
     def tabExportLayout
         return @driver.find_element(:xpath, "//div[2]/div/div/div/ul/li[3]/a")
+    end
+
+    #CHECKBOXES
+    def checkboxRemoteCMS
+        return @driver.find_element(:xpath, "//div[2]/div/div[2]/div/label")
     end
 
     #BUTTONS
@@ -69,17 +75,23 @@ class LocationPages
     def dropdownParentChildPageNone
         return @driver.find_element(:xpath, "//div/div/div/ul/li[2]/span")
     end
-    def dropdownLocationImportLayout
+    def dropdownOneImportLayout
         return @driver.find_element(:xpath, "//div[2]/div[3]/div/input")
     end
-    def dropdownLocationImportLayoutFirstItem
+    def dropdownOneImportLayoutFirstItem
         return @driver.find_element(:xpath, "//div[3]/div/ul/li[2]/span")
     end
-    def dropdownLocationPageImportLayout
+    def dropdownTwoPageImportLayout
         return @driver.find_element(:xpath, "//div[2]/div[4]/div/input")
     end
-    def dropdownLocationPageImportLayoutFirstItem
+    def dropdownTwoPageImportLayoutFirstItem
         return @driver.find_element(:xpath, "//div[4]/div/ul/li[2]/span")
+    end
+    def dropdownThreePageImportLayout
+        return @driver.find_element(:xpath, "//div[2]/div[5]/div/input")
+    end
+    def dropdownThreePageImportLayoutFirstItem
+        return @driver.find_element(:xpath, "//div[5]/div/ul/li[2]/span")
     end
 
     #TOOGLES/SWITCHES
@@ -93,13 +105,26 @@ class LocationPages
     end
 
     #OTHERS
-    def disabledPageStatusLastNavPage
-        return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/span")        
-    end
-    def noIndexPageStatusLastNavPage
-        return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/span")        
+    def statusIndividualLastNavPage
+        return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/span")
     end
     def importingPageStatusLastNavPage
-        return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/span/span")        
+        return @driver.find_element(:css, "span.pulsate")
+    end
+    
+    #METHODS
+    def refreshAndWait
+        @driver.navigate.refresh
+        @wait.until{@driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']")}
+    end
+    def is_element_present(how, what)
+        @driver.manage.timeouts.implicit_wait = 0
+        result = @driver.find_elements(how, what).size() > 0
+        if result
+            result = @driver.find_element(how, what).displayed?
+        end
+        @driver.manage.timeouts.implicit_wait = 30
+        @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']").displayed?
+        return result
     end
 end

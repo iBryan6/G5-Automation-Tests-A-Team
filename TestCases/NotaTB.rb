@@ -13,7 +13,7 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 
 #SETUP
 puts "Starting Basic Functionalities"
-wait = Selenium::WebDriver::Wait.new(:timeout => 15)
+wait = Selenium::WebDriver::Wait.new(:timeout => 20)
 driver = Selenium::WebDriver.for :chrome
 driver.manage.window.maximize
 
@@ -26,32 +26,37 @@ auth.clickSubmit
 
 #CLIENT LOCATION LIST
 client = ClientPage.new(driver)
+sleep 5
 wait.until{client.btnEditFirstLocation}
 client.btnEditFirstLocation.click
 puts "Login Successfully"
 sleep 5
-location = LocationPages.new(driver)
+location = LocationPages.new(driver,wait)
 
 #TESTS
-puts "***\nTC7: Starting..."
+puts "***\nTC8: Starting..."
 location.btnSettingsLastNavParentPage.click
 location.tabImportLayout.click
+location.checkboxRemoteCMS.click
 sleep 5
-location.dropdownLocationImportLayout.click
-location.dropdownLocationImportLayoutFirstItem.click
+location.dropdownOneImportLayout.click
+location.dropdownOneImportLayoutFirstItem.click
 sleep 5
-location.dropdownLocationPageImportLayout.click
-location.dropdownLocationPageImportLayoutFirstItem.click
+location.dropdownTwoPageImportLayout.click
+location.dropdownTwoPageImportLayoutFirstItem.click
 sleep 5
+location.dropdownThreePageImportLayout.click
+location.dropdownThreePageImportLayoutFirstItem.click
 location.btnImportLayout.click
-puts "TC7: Importing Page Layout from the same CMS"
-sleep 3
+puts "TC8: Importing Page Layout from the a Remote CMS"
 location.btnModalConfirm.click
 wait.until{location.popUpSuccess}
-puts "TC7: Success Popup Shown"
-driver.navigate.refresh
-sleep 5
-(location.importingPageStatusLastNavPage.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
-while (location.importingPageStatusLastNavPage.text.include?('Importing Layout...') == true) do
+puts "TC8: Success Popup Shown"
+location.refreshAndWait()
+(location.importingPageStatusLastNavPage.text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
+while (location.is_element_present(:css, "span.pulsate") == true) do
     driver.navigate.refresh
 end
+puts "TC8: Page Imported Successfully"
+puts "TC8: Complete!"
+location.refreshAndWait()
