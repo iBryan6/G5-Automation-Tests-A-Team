@@ -35,6 +35,9 @@ class ClientPage
     def checkboxTargetFirstWebsite
         return @driver.find_element(:xpath, "//p/div/label")
     end
+    def checkboxRemoteCMS
+        return @driver.find_element(:xpath, "//div[4]/div/div/div/label")
+    end
 
     #OTHERS
     def statusWebsite
@@ -48,12 +51,26 @@ class ClientPage
     def dropdownOneCopyWebsiteFirstItem
         return @driver.find_element(:xpath, "//div[3]/div/div/ul/li[2]/span")
     end
+    def dropdownTwoCopyWebsite
+        return @driver.find_element(:xpath, "//div[3]/div[2]/div/input")
+    end
+    def dropdownTwoCopyWebsiteFirstItem
+        return @driver.find_element(:xpath, "//div[3]/div[2]/div/ul/li[2]/span")
+    end
+
+    def dropdownContainsRemoteClient(client)
+        return @driver.find_element(:xpath, "//span[contains(text(),'#{client}')]")
+    end
     
     #METHODS
     def refreshAndWait
         sleep 10
         @driver.navigate.refresh
         @wait.until{@driver.find_element(:xpath, "//ul[@class='collection locations']")}
+    end
+    def refreshAndNextTC
+        @driver.navigate.refresh
+        sleep 15
     end
     def is_element_present(how, what)
         @driver.manage.timeouts.implicit_wait = 0
@@ -64,5 +81,11 @@ class ClientPage
         @driver.manage.timeouts.implicit_wait = 30
         @driver.find_element(:xpath, "//ul[@class='collection locations']").displayed?
         return result
+    end
+    def checkImporting(status)
+        while (is_element_present(:css, "span.pulsate") == status) do
+            @driver.navigate.refresh
+            sleep 5
+        end
     end
 end

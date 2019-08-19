@@ -10,51 +10,52 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 @pageNameNewValue = 'New Page Name'
 @pageTitleNewValue = 'New Page Title'
 @pageDescNewValue = 'New Page Description'
+@remoteClient = 'A1 U Store It'
 
 #SETUP
-puts "Starting Basic Functionalities"
-wait = Selenium::WebDriver::Wait.new(:timeout => 20)
 driver = Selenium::WebDriver.for :chrome
+wait = Selenium::WebDriver::Wait.new(:timeout => 20)
+auth = LoginPage.new(driver)
+location = LocationPages.new(driver,wait)
+client = ClientPage.new(driver,wait)
 driver.manage.window.maximize
 
 #LOGIN PAGE
-auth = LoginPage.new(driver)
 auth.goToPage(@url)
 auth.typeEmail
 auth.typePassword
 auth.clickSubmit
 
 #CLIENT LOCATION LIST
-client = ClientPage.new(driver,wait)
-sleep 5
-wait.until{client.btnEditFirstLocation}
-client.btnEditFirstLocation.click
+puts "Starting Basic Functionalities"
+while (client.is_element_present(:css, "spinner-wrapper") == true) do
+    sleep 5
+    puts "test"
+end
+wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
 puts "Login Successfully"
 sleep 5
-location = LocationPages.new(driver,wait)
 
 #TESTS
-puts "***\nTC9: Starting..."
-driver.navigate.to(@url)
-sleep 5
+puts "***\nTC10: Starting..."
 client.tabCopyWebsites.click
+client.checkboxRemoteCMS.click
+sleep 5
 client.dropdownOneCopyWebsite.click
-client.dropdownOneCopyWebsiteFirstItem.click
+client.dropdownContainsRemoteClient(@remoteClient).click
+sleep 5
+client.dropdownTwoCopyWebsite.click
+client.dropdownTwoCopyWebsiteFirstItem.click
+sleep 5
 client.checkboxTargetFirstWebsite.click
 client.btnConfirmCopyWebsite.click
 client.btnModalConfirm.click
-puts "TC9: Copying entire Website to Local Website"
+puts "TC10: Copying entire Remote Website to Local Website"
 wait.until{client.popUpSuccess}
-puts "TC9: Success Popup Shown"
-while (client.is_element_present(:css, "span.pulsate") == false) do
-    driver.navigate.refresh
-    sleep 5
-end
-(client.statusWebsite.text.include?('Updating')) ? (puts "TC9: Page is being copied") : (puts "TC9 ERROR: Page is not being copied!")
-while (client.is_element_present(:css, "span.pulsate") == true) do
-    driver.navigate.refresh
-    sleep 5
-end
-puts "TC9: Page Copied Successfully"
-puts "TC9: Complete!"
+puts "TC10: Success Popup Shown"
+client.checkImporting(false)
+(client.statusWebsite.text.include?('Updating')) ? (puts "TC10: Page is being copied") : (puts "TC10 ERROR: Page is not being copied!")
+client.checkImporting(true)
+puts "TC10: Page Copied Successfully"
+puts "TC10: Complete!"
 client.refreshAndWait

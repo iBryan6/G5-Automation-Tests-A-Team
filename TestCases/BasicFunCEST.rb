@@ -10,6 +10,7 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 @pageNameNewValue = 'New Page Name'
 @pageTitleNewValue = 'New Page Title'
 @pageDescNewValue = 'New Page Description'
+@remoteClient = 'A1 U Store It'
 
 #SETUP
 driver = Selenium::WebDriver.for :chrome
@@ -27,11 +28,8 @@ auth.clickSubmit
 
 #CLIENT LOCATION LIST
 puts "Starting Basic Functionalities"
-while (client.is_element_present(:css, "spinner-wrapper") == true) do
-    sleep 5
-    puts "test"
-end
 wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
+sleep 5
 client.btnEditFirstLocation.click
 puts "Login Successfully"
 sleep 5
@@ -48,7 +46,7 @@ puts "TC1: Success Popup Shown"
 location.refreshAndWait()
 wait.until {/New Page Test/.match(driver.page_source)} ? (puts "TC1: New Page Test Added Successfully") : (puts "TC1 ERROR: New Page Test Wasn't Found!")
 puts "TC1: Complete!"
-location.refreshAndWait()
+location.refreshAndNextTC()
 
 #TC2
 puts "***\nTC2: Starting..."
@@ -64,7 +62,7 @@ location.btnSettingsLastNavParentPage.click
 @nameValue = location.inputPageName.attribute('value')
 (@nameValue == @pageNameNewValue) ? (puts "TC2: Name changed Successfully") : (puts "TC2 ERROR: Name wasn't changed!!")
 puts "TC2: Complete!"
-location.refreshAndWait()
+location.refreshAndNextTC()
 
 #TC3
 puts "***\nTC3: Starting..."
@@ -80,7 +78,7 @@ location.btnSettingsLastNavParentPage.click
 @titleValue = location.inputPageTitle.attribute('value')
 (@titleValue == @pageTitleNewValue) ? (puts "TC3: Title changed Successfully") : (puts "TC3 ERROR: Title wasn't changed!!")
 puts "TC3: Complete!"
-location.refreshAndWait()
+location.refreshAndNextTC()
 
 #TC4
 puts "***\nTC4: Starting..."
@@ -96,7 +94,7 @@ location.btnSettingsLastNavParentPage.click
 @descriptionValue = location.inputPageDescription.attribute('value')
 (@descriptionValue == @pageDescNewValue) ? (puts "TC4: Description changed Successfully") : (puts "TC4 ERROR: Description wasn't changed!!")
 puts "TC4: Complete!"
-location.refreshAndWait()
+location.refreshAndNextTC()
 
 #TC5
 puts "***\nTC5: Starting..."
@@ -119,7 +117,7 @@ puts "TC5: Success Popup Shown"
 location.refreshAndWait()
 (location.pageTitleLastParent.text.include?(@pageNameNewValue)) ? (puts "TC5: Changed to a Parent Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Parent Page")
 puts "TC5: Complete!"
-location.refreshAndWait()
+location.refreshAndNextTC()
 
 #TC6
 puts "***\nTC6: Starting..."
@@ -140,7 +138,7 @@ puts "TC6: Success Popup Shown"
 location.refreshAndWait()
 (location.statusIndividualLastNavPage.text.include?('Disabled Page')) ? (puts "TC6 ERROR: Page wasn't Enabled Correctly") : (puts "TC6: Page was Enabled Successfully")
 puts "TC6: Complete!"
-location.refreshAndWait()
+location.refreshAndNextTC()
 
 #TC7
 puts "***\nTC7: Starting..."
@@ -159,24 +157,19 @@ wait.until{location.popUpSuccess}
 puts "TC7: Success Popup Shown"
 location.refreshAndWait()
 (location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
-while (location.is_element_present(:css, "span.pulsate") == true) do
-    driver.navigate.refresh
-end
+location.checkImporting(true)
 puts "TC7: Page Imported Successfully"
 puts "TC7: Complete!"
-location.refreshAndWait()
-sleep 10
+location.refreshAndNextTC()
 
 #TC8
 puts "***\nTC8: Starting..."
-driver.navigate.refresh
-sleep 5
 location.btnSettingsLastNavParentPage.click
 location.tabImportLayout.click
 location.checkboxRemoteCMS.click
 sleep 5
 location.dropdownOneImportLayout.click
-location.dropdownOneImportLayoutFirstItem.click
+location.dropdownContainsRemoteClient(@remoteClient).click
 sleep 5
 location.dropdownTwoPageImportLayout.click
 location.dropdownTwoPageImportLayoutFirstItem.click
@@ -190,12 +183,10 @@ wait.until{location.popUpSuccess}
 puts "TC8: Success Popup Shown"
 location.refreshAndWait()
 (location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
-while (location.is_element_present(:css, "span.pulsate") == true) do
-    driver.navigate.refresh
-end
+location.checkImporting(true)
 puts "TC8: Page Imported Successfully"
 puts "TC8: Complete!"
-location.refreshAndWait()
+location.refreshAndNextTC()
 
 #TC9
 puts "***\nTC9: Starting..."
@@ -210,17 +201,35 @@ client.btnModalConfirm.click
 puts "TC9: Copying entire Website to Local Website"
 wait.until{client.popUpSuccess}
 puts "TC9: Success Popup Shown"
-while (client.is_element_present(:css, "span.pulsate") == false) do
-    driver.navigate.refresh
-    sleep 5
-end
+client.checkImporting(false)
 (client.statusWebsite.text.include?('Updating')) ? (puts "TC9: Page is being copied") : (puts "TC9 ERROR: Page is not being copied!")
-while (client.is_element_present(:css, "span.pulsate") == true) do
-    driver.navigate.refresh
-    sleep 5
-end
+client.checkImporting(true)
 puts "TC9: Page Copied Successfully"
 puts "TC9: Complete!"
-client.refreshAndWait
+client.refreshAndNextTC()
+
+#TC10
+puts "***\nTC10: Starting..."
+client.tabCopyWebsites.click
+client.checkboxRemoteCMS.click
+sleep 5
+client.dropdownOneCopyWebsite.click
+client.dropdownContainsRemoteClient(@remoteClient).click
+sleep 5
+client.dropdownTwoCopyWebsite.click
+client.dropdownTwoCopyWebsiteFirstItem.click
+sleep 5
+client.checkboxTargetFirstWebsite.click
+client.btnConfirmCopyWebsite.click
+client.btnModalConfirm.click
+puts "TC10: Copying entire Remote Website to Local Website"
+wait.until{client.popUpSuccess}
+puts "TC10: Success Popup Shown"
+client.checkImporting(false)
+(client.statusWebsite.text.include?('Updating')) ? (puts "TC10: Page is being copied") : (puts "TC10 ERROR: Page is not being copied!")
+client.checkImporting(true)
+puts "TC10: Page Copied Successfully"
+puts "TC10: Complete!"
+client.refreshAndNextTC()
 
 driver.quit

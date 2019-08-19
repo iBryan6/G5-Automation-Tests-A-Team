@@ -93,6 +93,9 @@ class LocationPages
     def dropdownThreePageImportLayoutFirstItem
         return @driver.find_element(:xpath, "//div[5]/div/ul/li[2]/span")
     end
+    def dropdownContainsRemoteClient(client)
+        return @driver.find_element(:xpath, "//span[contains(text(),'#{client}')]")
+    end
 
     #TOOGLES/SWITCHES
     def tooglePageStatus
@@ -117,6 +120,10 @@ class LocationPages
         @driver.navigate.refresh
         @wait.until{@driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']")}
     end
+    def refreshAndNextTC
+        @driver.navigate.refresh
+        sleep 15
+    end
     def is_element_present(how, what)
         @driver.manage.timeouts.implicit_wait = 0
         result = @driver.find_elements(how, what).size() > 0
@@ -126,5 +133,11 @@ class LocationPages
         @driver.manage.timeouts.implicit_wait = 30
         @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']").displayed?
         return result
+    end
+    def checkImporting(status)
+        while (is_element_present(:css, "span.pulsate") == status) do
+            @driver.navigate.refresh
+            sleep 5
+        end
     end
 end
