@@ -48,6 +48,7 @@ wait.until {/New Page Test/.match(driver.page_source)} ? (puts "TC1: New Page Te
 puts "TC1: Complete!"
 location.refreshAndNextTC()
 
+
 #TC2
 puts "***\nTC2: Starting..."
 location.btnSettingsLastNavParentPage.click
@@ -155,11 +156,12 @@ puts "TC7: Importing Page Layout from the same CMS"
 location.btnModalConfirm.click
 wait.until{location.popUpSuccess}
 puts "TC7: Success Popup Shown"
-location.refreshAndWait()
+location.checkImporting(true)
 (location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
 location.checkImporting(true)
 puts "TC7: Page Imported Successfully"
 puts "TC7: Complete!"
+location.refreshAndNextTC()
 location.refreshAndNextTC()
 
 #TC8
@@ -181,7 +183,7 @@ puts "TC8: Importing Page Layout from the a Remote CMS"
 location.btnModalConfirm.click
 wait.until{location.popUpSuccess}
 puts "TC8: Success Popup Shown"
-location.refreshAndWait()
+location.checkImporting(true)
 (location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
 location.checkImporting(true)
 puts "TC8: Page Imported Successfully"

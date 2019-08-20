@@ -122,6 +122,7 @@ class LocationPages
     end
     def refreshAndNextTC
         @driver.navigate.refresh
+        @wait.until{@driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']")}
         sleep 15
     end
     def is_element_present(how, what)

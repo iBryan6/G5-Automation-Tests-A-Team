@@ -37,25 +37,3 @@ puts "Login Successfully"
 sleep 5
 
 #TESTS
-puts "***\nTC10: Starting..."
-client.tabCopyWebsites.click
-client.checkboxRemoteCMS.click
-sleep 5
-client.dropdownOneCopyWebsite.click
-client.dropdownContainsRemoteClient(@remoteClient).click
-sleep 5
-client.dropdownTwoCopyWebsite.click
-client.dropdownTwoCopyWebsiteFirstItem.click
-sleep 5
-client.checkboxTargetFirstWebsite.click
-client.btnConfirmCopyWebsite.click
-client.btnModalConfirm.click
-puts "TC10: Copying entire Remote Website to Local Website"
-wait.until{client.popUpSuccess}
-puts "TC10: Success Popup Shown"
-client.checkImporting(false)
-(client.statusWebsite.text.include?('Updating')) ? (puts "TC10: Page is being copied") : (puts "TC10 ERROR: Page is not being copied!")
-client.checkImporting(true)
-puts "TC10: Page Copied Successfully"
-puts "TC10: Complete!"
-client.refreshAndWait
