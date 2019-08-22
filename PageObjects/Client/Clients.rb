@@ -10,6 +10,9 @@ class ClientPage
 
     #BUTTONS
     def btnEditFirstLocation
+        return @driver.find_element(:xpath, "//ul[2]/li/div/div/div[2]/div[3]/a[@class='btn edit-button ember-view']/span")
+    end
+    def btnEditSecondLocation
         return @driver.find_element(:xpath, "//ul[2]/li[2]/div/div/div[2]/div[3]/a[@class='btn edit-button ember-view']/span")
     end
     def btnConfirmCopyWebsite
@@ -87,5 +90,12 @@ class ClientPage
             @driver.navigate.refresh
             sleep 5
         end
+    end
+    def getG5HubClientURL(client)
+        @driver.navigate.to "https://g5-hub.herokuapp.com/"
+        @driver.find_element(:id, "q_name").send_keys(client)
+        @driver.action.send_keys(:enter).perform
+        @driver.find_element(:link_text, client).click
+        return @driver.find_element(:link_text, "Content Management System (CMS)").attribute("href")
     end
 end

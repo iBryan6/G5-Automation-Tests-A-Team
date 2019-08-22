@@ -41,6 +41,25 @@ class LocationPages
         return @driver.find_element(:xpath, "//div[2]/div/div[2]/div/label")
     end
 
+    #SIDEMENU
+    def sideMenuLayoutWidgets
+        return @driver.find_element(:xpath, "//i[@class='fa fa-pencil ember-view']")
+    end
+    def sideMenuLayoutWidgetsStyleEdits
+        return @driver.find_element(:xapth, "//ul/li[2]/div/i")
+    end
+
+    #BASECOLORS
+    def baseColorPrimary
+        return @driver.find_element(:xpath, "//p/div/div/div[2]/div/div/div")        
+    end
+    def baseColorSecondary
+        return @driver.find_element(:xpath, "//p/div/div/div[3]/div/div/div")            
+    end
+    def baseColorTertiary
+        return @driver.find_element(:xpath, "//p/div/div/div[4]/div/div/div")            
+    end
+
     #BUTTONS
     def btnCreateNewPage
         return @driver.find_element(:xpath, "//div[@class='anchor-actions']/span/i")

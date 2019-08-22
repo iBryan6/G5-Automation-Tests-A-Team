@@ -30,7 +30,7 @@ auth.clickSubmit
 puts "Starting Basic Functionalities"
 wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
 sleep 5
-client.btnEditFirstLocation.click
+client.btnEditSecondLocation.click
 puts "Login Successfully"
 sleep 5
 
@@ -47,7 +47,6 @@ location.refreshAndWait()
 wait.until {/New Page Test/.match(driver.page_source)} ? (puts "TC1: New Page Test Added Successfully") : (puts "TC1 ERROR: New Page Test Wasn't Found!")
 puts "TC1: Complete!"
 location.refreshAndNextTC()
-
 
 #TC2
 puts "***\nTC2: Starting..."
