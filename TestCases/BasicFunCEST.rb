@@ -35,133 +35,151 @@ puts "Login Successfully"
 sleep 5
 
 #TEST CASES
-#TC1
-puts "***\nTC1: Starting..."
-location.btnCreateNewPage.click
-location.inputPageName.send_keys(@newPageName)
-location.btnSave.click
-puts "TC1: Adding New Page"
-wait.until{location.popUpSuccess}
-puts "TC1: Success Popup Shown"
-location.refreshAndWait()
-wait.until {/New Page Test/.match(driver.page_source)} ? (puts "TC1: New Page Test Added Successfully") : (puts "TC1 ERROR: New Page Test Wasn't Found!")
-puts "TC1: Complete!"
-location.refreshAndNextTC()
+class TestCases
+    def initialize(driver,wait,location)
+        @location = location
+        @driver = driver
+        @wait = wait
+    end
+    def runTC1(newPageName)
+        puts "***\nTC1: Starting to create new page..."
+        @location.btnCreateNewPage.click
+        @location.inputPageName.send_keys(newPageName)
+        @location.btnSave.click
+        puts "TC1: Adding New Page"
+        @wait.until{@location.popUpSuccess}
+        puts "TC1: Success Popup Shown"
+        @location.refreshAndWait()
+        @wait.until {/New Page Test/.match(@driver.page_source)} ? (puts "TC1: New Page Test Added Successfully") : (puts "TC1 ERROR: New Page Test Wasn't Found!")
+        puts "TC1: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC2(pageNameNewValue)
+        puts "***\nTC2: Starting to change page name..."
+        @location.btnSettingsLastNavParentPage.click
+        @location.inputPageName.clear
+        @location.inputPageName.send_keys(pageNameNewValue)
+        puts "TC2: Changing Page Name"
+        @location.btnSave.click
+        @wait.until{@location.popUpSuccess}
+        puts "TC2: Success Popup Shown"
+        @location.refreshAndWait()
+        @location.btnSettingsLastNavParentPage.click
+        @nameValue = @location.inputPageName.attribute('value')
+        (@nameValue == pageNameNewValue) ? (puts "TC2: Name changed Successfully") : (puts "TC2 ERROR: Name wasn't changed!!")
+        puts "TC2: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC3(pageTitleNewValue)
+        puts "***\nTC3: Starting to change page title..."
+        @location.btnSettingsLastNavParentPage.click
+        @location.inputPageTitle.clear
+        @location.inputPageTitle.send_keys(pageTitleNewValue)
+        puts "TC3: Changing Page Title"
+        @location.btnSave.click
+        @wait.until{@location.popUpSuccess}
+        puts "TC3: Success Popup Shown"
+        @location.refreshAndWait()
+        @location.btnSettingsLastNavParentPage.click
+        @titleValue = @location.inputPageTitle.attribute('value')
+        (@titleValue == pageTitleNewValue) ? (puts "TC3: Title changed Successfully") : (puts "TC3 ERROR: Title wasn't changed!!")
+        puts "TC3: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC4(pageDescNewValue)
+        puts "***\nTC4: Starting to change page description..."
+        @location.btnSettingsLastNavParentPage.click
+        @location.inputPageDescription.clear
+        @location.inputPageDescription.send_keys(pageDescNewValue)
+        puts "TC4: Changing Page Description"
+        @location.btnSave.click
+        @wait.until{@location.popUpSuccess}
+        puts "TC4: Success Popup Shown"
+        @location.refreshAndWait()
+        @location.btnSettingsLastNavParentPage.click
+        @descriptionValue = @location.inputPageDescription.attribute('value')
+        (@descriptionValue == pageDescNewValue) ? (puts "TC4: Description changed Successfully") : (puts "TC4 ERROR: Description wasn't changed!!")
+        puts "TC4: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC5(pageNameNewValue)
+        puts "***\nTC5: Starting to switch between child/parent page..."
+        @location.btnSettingsLastNavParentPage.click
+        @location.dropdownParentChildPage.click
+        @location.dropdownParentChildPageItem.click
+        @location.btnSave.click
+        puts "TC5: Changing to a Child Page"
+        @wait.until{@location.popUpSuccess}
+        puts "TC5: Success Popup Shown"
+        @location.refreshAndWait()
+        (@location.pageTitleFirstChild.text.include?(pageNameNewValue)) ? (puts "TC5: Changed to a Child Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Child Page")
+        @location.btnSettingsFirstNavChildPage(pageNameNewValue).click
+        @location.dropdownParentChildPage.click
+        @location.dropdownParentChildPageNone.click
+        @location.btnSave.click
+        puts "TC5: Changing to a Parent Page"
+        @wait.until{@location.popUpSuccess}
+        puts "TC5: Success Popup Shown"
+        @location.refreshAndWait()
+        (@location.pageTitleLastParent.text.include?(pageNameNewValue)) ? (puts "TC5: Changed to a Parent Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Parent Page")
+        puts "TC5: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC6()
+        puts "***\nTC6: Starting to switch between disabled/enabled page..."
+        @location.btnSettingsLastNavParentPage.click
+        @location.tooglePageStatus.click
+        @location.btnSave.click
+        puts "TC6: Changing Page Status to Disabled"
+        @wait.until{@location.popUpSuccess}
+        puts "TC6: Success Popup Shown"
+        @location.refreshAndWait()
+        (@location.statusIndividualLastNavPage.text.include?('Disabled Page')) ? (puts "TC6: Page was Disabled Successfully") : (puts "TC6 ERROR: Page wasn't Disabled")
+        @location.btnSettingsLastNavParentPage.click
+        @location.tooglePageStatus.click
+        @location.btnSave.click
+        puts "TC6: Changing Page Status to Enabled"
+        @wait.until{@location.popUpSuccess}
+        puts "TC6: Success Popup Shown"
+        @location.refreshAndWait()
+        (@location.statusIndividualLastNavPage.text.include?('Disabled Page')) ? (puts "TC6 ERROR: Page wasn't Enabled Correctly") : (puts "TC6: Page was Enabled Successfully")
+        puts "TC6: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC7()
+        puts "***\nTC7: Starting..."
+        @location.btnSettingsLastNavParentPage.click
+        @location.tabImportLayout.click
+        sleep 5
+        @location.dropdownOneImportLayout.click
+        @location.dropdownOneImportLayoutFirstItem.click
+        sleep 5
+        @location.dropdownTwoPageImportLayout.click
+        @location.dropdownTwoPageImportLayoutFirstItem.click
+        @location.btnImportLayout.click
+        puts "TC7: Importing Page Layout from the same CMS"
+        @location.btnModalConfirm.click
+        @wait.until{@location.popUpSuccess}
+        puts "TC7: Success Popup Shown"
+        @location.checkImporting(true)
+        (@location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
+        @location.checkImporting(true)
+        puts "TC7: Page Imported Successfully"
+        puts "TC7: Complete!"
+        @location.refreshAndNextTC()
+        @location.refreshAndNextTC()
+    end
+end
 
-#TC2
-puts "***\nTC2: Starting..."
-location.btnSettingsLastNavParentPage.click
-location.inputPageName.clear
-location.inputPageName.send_keys(@pageNameNewValue)
-puts "TC2: Changing Page Name"
-location.btnSave.click
-wait.until{location.popUpSuccess}
-puts "TC2: Success Popup Shown"
-location.refreshAndWait()
-location.btnSettingsLastNavParentPage.click
-@nameValue = location.inputPageName.attribute('value')
-(@nameValue == @pageNameNewValue) ? (puts "TC2: Name changed Successfully") : (puts "TC2 ERROR: Name wasn't changed!!")
-puts "TC2: Complete!"
-location.refreshAndNextTC()
-
-#TC3
-puts "***\nTC3: Starting..."
-location.btnSettingsLastNavParentPage.click
-location.inputPageTitle.clear
-location.inputPageTitle.send_keys(@pageTitleNewValue)
-puts "TC3: Changing Page Title"
-location.btnSave.click
-wait.until{location.popUpSuccess}
-puts "TC3: Success Popup Shown"
-location.refreshAndWait()
-location.btnSettingsLastNavParentPage.click
-@titleValue = location.inputPageTitle.attribute('value')
-(@titleValue == @pageTitleNewValue) ? (puts "TC3: Title changed Successfully") : (puts "TC3 ERROR: Title wasn't changed!!")
-puts "TC3: Complete!"
-location.refreshAndNextTC()
-
-#TC4
-puts "***\nTC4: Starting..."
-location.btnSettingsLastNavParentPage.click
-location.inputPageDescription.clear
-location.inputPageDescription.send_keys(@pageDescNewValue)
-puts "TC4: Changing Page Description"
-location.btnSave.click
-wait.until{location.popUpSuccess}
-puts "TC4: Success Popup Shown"
-location.refreshAndWait()
-location.btnSettingsLastNavParentPage.click
-@descriptionValue = location.inputPageDescription.attribute('value')
-(@descriptionValue == @pageDescNewValue) ? (puts "TC4: Description changed Successfully") : (puts "TC4 ERROR: Description wasn't changed!!")
-puts "TC4: Complete!"
-location.refreshAndNextTC()
-
-#TC5
-puts "***\nTC5: Starting..."
-location.btnSettingsLastNavParentPage.click
-location.dropdownParentChildPage.click
-location.dropdownParentChildPageItem.click
-location.btnSave.click
-puts "TC5: Changing to a Child Page"
-wait.until{location.popUpSuccess}
-puts "TC5: Success Popup Shown"
-location.refreshAndWait()
-(location.pageTitleFirstChild.text.include?(@pageNameNewValue)) ? (puts "TC5: Changed to a Child Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Child Page")
-location.btnSettingsFirstNavChildPage(@pageNameNewValue).click
-location.dropdownParentChildPage.click
-location.dropdownParentChildPageNone.click
-location.btnSave.click
-puts "TC5: Changing to a Parent Page"
-wait.until{location.popUpSuccess}
-puts "TC5: Success Popup Shown"
-location.refreshAndWait()
-(location.pageTitleLastParent.text.include?(@pageNameNewValue)) ? (puts "TC5: Changed to a Parent Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Parent Page")
-puts "TC5: Complete!"
-location.refreshAndNextTC()
-
-#TC6
-puts "***\nTC6: Starting..."
-location.btnSettingsLastNavParentPage.click
-location.tooglePageStatus.click
-location.btnSave.click
-puts "TC6: Changing Page Status to Disabled"
-wait.until{location.popUpSuccess}
-puts "TC6: Success Popup Shown"
-location.refreshAndWait()
-(location.statusIndividualLastNavPage.text.include?('Disabled Page')) ? (puts "TC6: Page was Disabled Successfully") : (puts "TC6 ERROR: Page wasn't Disabled")
-location.btnSettingsLastNavParentPage.click
-location.tooglePageStatus.click
-location.btnSave.click
-puts "TC6: Changing Page Status to Enabled"
-wait.until{location.popUpSuccess}
-puts "TC6: Success Popup Shown"
-location.refreshAndWait()
-(location.statusIndividualLastNavPage.text.include?('Disabled Page')) ? (puts "TC6 ERROR: Page wasn't Enabled Correctly") : (puts "TC6: Page was Enabled Successfully")
-puts "TC6: Complete!"
-location.refreshAndNextTC()
-
-#TC7
-puts "***\nTC7: Starting..."
-location.btnSettingsLastNavParentPage.click
-location.tabImportLayout.click
-sleep 5
-location.dropdownOneImportLayout.click
-location.dropdownOneImportLayoutFirstItem.click
-sleep 5
-location.dropdownTwoPageImportLayout.click
-location.dropdownTwoPageImportLayoutFirstItem.click
-location.btnImportLayout.click
-puts "TC7: Importing Page Layout from the same CMS"
-location.btnModalConfirm.click
-wait.until{location.popUpSuccess}
-puts "TC7: Success Popup Shown"
-location.checkImporting(true)
-(location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
-location.checkImporting(true)
-puts "TC7: Page Imported Successfully"
-puts "TC7: Complete!"
-location.refreshAndNextTC()
-location.refreshAndNextTC()
+testCase = TestCases.new(driver,wait,location)
+testCase.runTC1(@newPageName)
+testCase.runTC2(@pageNameNewValue)
+testCase.runTC3(@pageTitleNewValue)
+testCase.runTC4(@pageDescNewValue)
+testCase.runTC5(@pageNameNewValue)
+testCase.runTC6()
+testCase.runTC7()
+driver.quit
 
 #TC8
 puts "***\nTC8: Starting..."
@@ -256,5 +274,3 @@ if(@remoteLocPrimaryColor == @LocalLocPrimaryColor && @RemoteLocSecondaryColor =
 else
     puts "TC11 ERROR: Something went wrong, styles are not the same!"
 end
-
-driver.quit
