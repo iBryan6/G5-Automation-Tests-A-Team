@@ -27,19 +27,3 @@ auth.typePassword
 auth.clickSubmit
 
 #TESTS
-puts "***\nTC11: Starting to check if styles copied successfully"
-@remoteCmsURL = client.getG5HubClientURL(@remoteClient)
-driver.navigate.to(@remoteCmsURL)
-sleep 5
-client.btnEditFirstLocation.click
-wait.until{driver.find_element(:xpath, "//i[@class='fa fa-pencil ember-view']")}
-driver.action.move_to(driver.find_element(:xpath, "//i[@class='fa fa-pencil ember-view']/following-sibling::span")).perform
-sleep 3
-location.sideMenuLayoutWidgets.click
-puts "clicked Layout Widgets"
-sleep 3
-wait.until{driver.find_element(:xpath, "//p/div/div/div[2]/div/div/div")}
-@remoteLocPrimaryColor = location.baseColorPrimary.attribute("style")
-puts @remoteLocPrimaryColor
-@RemoteLocSecondaryColor = location.baseColorSecondary.attribute("style")
-@RemoteLocTertiaryColor = location.baseColorTertiary.attribute("style")

@@ -233,4 +233,28 @@ puts "TC10: Page Copied Successfully"
 puts "TC10: Complete!"
 client.refreshAndNextTC()
 
+#TC11
+puts "***\nTC11: Starting to check if styles copied successfully"
+@remoteCmsURL = client.getG5HubClientURL(@remoteClient)
+location.goToPage(@remoteCmsURL)
+client.btnEditFirstLocation.click
+sleep 5
+@remoteLocPrimaryColor = location.baseColorPrimary.attribute("style")
+@RemoteLocSecondaryColor = location.baseColorSecondary.attribute("style")
+@RemoteLocTertiaryColor = location.baseColorTertiary.attribute("style")
+puts "TC11: Retrieved remote CMS colors"
+location.goToPage(@cms)
+client.btnEditFirstLocation.click
+sleep 5
+@LocalLocPrimaryColor = location.baseColorPrimary.attribute("style")
+@LocalLocSecondaryColor = location.baseColorSecondary.attribute("style")
+@LocalLocTertiaryColor = location.baseColorTertiary.attribute("style")
+puts "TC11: Retrieved local CMS colors"
+puts "TC11: Comparing colors..."
+if(@remoteLocPrimaryColor == @LocalLocPrimaryColor && @RemoteLocSecondaryColor == @LocalLocSecondaryColor && @RemoteLocTertiaryColor == @LocalLocTertiaryColor)
+    puts "TC11: Global Styles copied successfully"
+else
+    puts "TC11 ERROR: Something went wrong, styles are not the same!"
+end
+
 driver.quit

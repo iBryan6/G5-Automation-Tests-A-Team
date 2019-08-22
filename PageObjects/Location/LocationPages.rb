@@ -41,14 +41,6 @@ class LocationPages
         return @driver.find_element(:xpath, "//div[2]/div/div[2]/div/label")
     end
 
-    #SIDEMENU
-    def sideMenuLayoutWidgets
-        return @driver.find_element(:xpath, "//i[@class='fa fa-pencil ember-view']")
-    end
-    def sideMenuLayoutWidgetsStyleEdits
-        return @driver.find_element(:xapth, "//ul/li[2]/div/i")
-    end
-
     #BASECOLORS
     def baseColorPrimary
         return @driver.find_element(:xpath, "//p/div/div/div[2]/div/div/div")        
@@ -159,5 +151,9 @@ class LocationPages
             @driver.navigate.refresh
             sleep 5
         end
+    end
+    def goToPage(url)
+        @driver.navigate.to(url)
+        sleep 5
     end
 end
