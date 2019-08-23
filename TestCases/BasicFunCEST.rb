@@ -25,13 +25,12 @@ auth.goToPage(@url)
 auth.typeEmail
 auth.typePassword
 auth.clickSubmit
+wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
+puts "Login Successfully"
 
 #CLIENT LOCATION LIST
 puts "Starting Basic Functionalities"
-wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
-sleep 5
 client.btnEditSecondLocation.click
-puts "Login Successfully"
 sleep 5
 
 #TEST CASES
@@ -162,7 +161,7 @@ class TestCases
         @location.btnModalConfirm.click
         @wait.until{@location.popUpSuccess}
         puts "TC7: Success Popup Shown"
-        @location.checkImporting(true)
+        @location.checkImporting(false)
         (@location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
         @location.checkImporting(true)
         puts "TC7: Page Imported Successfully"
@@ -171,7 +170,7 @@ class TestCases
         @location.refreshAndNextTC()
     end
     def runTC8(remoteClient)
-        puts "***\nTC8: Starting..."
+        puts "***\nTC8: Starting to import page layout from remote CMS..."
         @location.btnSettingsLastNavParentPage.click
         @location.tabImportLayout.click
         @location.checkboxRemoteCMS.click
@@ -197,7 +196,7 @@ class TestCases
         @location.refreshAndNextTC()
     end
     def runTC9(url)
-        puts "***\nTC9: Starting..."
+        puts "***\nTC9: Starting to clone entire location to same CMS..."
         @driver.navigate.to(url)
         sleep 5
         @client.tabCopyWebsites.click
@@ -217,7 +216,7 @@ class TestCases
         @client.refreshAndNextTC()
     end
     def runTC10(url,remoteClient)
-        puts "***\nTC10: Starting..."
+        puts "***\nTC10: Starting to clone entire location to remote CMS..."
         @driver.navigate.to(url)
         sleep 5
         @client.tabCopyWebsites.click
@@ -243,7 +242,7 @@ class TestCases
         @client.refreshAndNextTC()
     end
     def runTC11(url,remoteClient)
-        puts "***\nTC11: Starting to check if styles copied successfully"
+        puts "***\nTC11: Starting to check if styles copied successfully..."
         @remoteCmsURL = @client.getG5HubClientURL(remoteClient)
         @location.goToPage(@remoteCmsURL)
         @client.btnEditFirstLocation.click
@@ -275,7 +274,6 @@ testCase.runTC3(@pageTitleNewValue)
 testCase.runTC4(@pageDescNewValue)
 testCase.runTC5(@pageNameNewValue)
 testCase.runTC6()
-#TC7 NEEDS FIXING
 testCase.runTC7()
 testCase.runTC8(@remoteClient)
 testCase.runTC9(@url)
