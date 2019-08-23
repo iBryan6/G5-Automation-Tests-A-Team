@@ -36,10 +36,11 @@ sleep 5
 
 #TEST CASES
 class TestCases
-    def initialize(driver,wait,location)
+    def initialize(driver,wait,location,client)
         @location = location
         @driver = driver
         @wait = wait
+        @client = client
     end
     def runTC1(newPageName)
         puts "***\nTC1: Starting to create new page..."
@@ -147,7 +148,7 @@ class TestCases
         @location.refreshAndNextTC()
     end
     def runTC7()
-        puts "***\nTC7: Starting..."
+        puts "***\nTC7: Starting to import page layout from same CMS..."
         @location.btnSettingsLastNavParentPage.click
         @location.tabImportLayout.click
         sleep 5
@@ -169,108 +170,115 @@ class TestCases
         @location.refreshAndNextTC()
         @location.refreshAndNextTC()
     end
+    def runTC8(remoteClient)
+        puts "***\nTC8: Starting..."
+        @location.btnSettingsLastNavParentPage.click
+        @location.tabImportLayout.click
+        @location.checkboxRemoteCMS.click
+        sleep 5
+        @location.dropdownOneImportLayout.click
+        @location.dropdownContainsRemoteClient(remoteClient).click
+        sleep 5
+        @location.dropdownTwoPageImportLayout.click
+        @location.dropdownTwoPageImportLayoutFirstItem.click
+        sleep 5
+        @location.dropdownThreePageImportLayout.click
+        @location.dropdownThreePageImportLayoutFirstItem.click
+        @location.btnImportLayout.click
+        puts "TC8: Importing Page Layout from the a Remote CMS"
+        @location.btnModalConfirm.click
+        @wait.until{@location.popUpSuccess}
+        puts "TC8: Success Popup Shown"
+        @location.checkImporting(false)
+        (@location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
+        @location.checkImporting(true)
+        puts "TC8: Page Imported Successfully"
+        puts "TC8: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC9(url)
+        puts "***\nTC9: Starting..."
+        @driver.navigate.to(url)
+        sleep 5
+        @client.tabCopyWebsites.click
+        @client.dropdownOneCopyWebsite.click
+        @client.dropdownOneCopyWebsiteFirstItem.click
+        @client.checkboxTargetFirstWebsite.click
+        @client.btnConfirmCopyWebsite.click
+        @client.btnModalConfirm.click
+        puts "TC9: Copying entire Website to Local Website"
+        @wait.until{@client.popUpSuccess}
+        puts "TC9: Success Popup Shown"
+        @client.checkImporting(false)
+        (@client.statusWebsite.text.include?('Updating')) ? (puts "TC9: Page is being copied") : (puts "TC9 ERROR: Page is not being copied!")
+        @client.checkImporting(true)
+        puts "TC9: Page Copied Successfully"
+        puts "TC9: Complete!"
+        @client.refreshAndNextTC()
+    end
+    def runTC10(url,remoteClient)
+        puts "***\nTC10: Starting..."
+        @driver.navigate.to(url)
+        sleep 5
+        @client.tabCopyWebsites.click
+        @client.checkboxRemoteCMS.click
+        sleep 5
+        @client.dropdownOneCopyWebsite.click
+        @client.dropdownContainsRemoteClient(remoteClient).click
+        sleep 5
+        @client.dropdownTwoCopyWebsite.click
+        @client.dropdownTwoCopyWebsiteFirstItem.click
+        sleep 5
+        @client.checkboxTargetFirstWebsite.click
+        @client.btnConfirmCopyWebsite.click
+        @client.btnModalConfirm.click
+        puts "TC10: Copying entire Remote Website to Local Website"
+        @wait.until{@client.popUpSuccess}
+        puts "TC10: Success Popup Shown"
+        @client.checkImporting(false)
+        (@client.statusWebsite.text.include?('Updating')) ? (puts "TC10: Page is being copied") : (puts "TC10 ERROR: Page is not being copied!")
+        @client.checkImporting(true)
+        puts "TC10: Page Copied Successfully"
+        puts "TC10: Complete!"
+        @client.refreshAndNextTC()
+    end
+    def runTC11(url,remoteClient)
+        puts "***\nTC11: Starting to check if styles copied successfully"
+        @remoteCmsURL = @client.getG5HubClientURL(remoteClient)
+        @location.goToPage(@remoteCmsURL)
+        @client.btnEditFirstLocation.click
+        sleep 5
+        @remoteLocPrimaryColor = @location.baseColorPrimary.attribute("style")
+        @RemoteLocSecondaryColor = @location.baseColorSecondary.attribute("style")
+        @RemoteLocTertiaryColor = @location.baseColorTertiary.attribute("style")
+        puts "TC11: Retrieved remote CMS colors"
+        @location.goToPage(url)
+        @client.btnEditFirstLocation.click
+        sleep 5
+        @LocalLocPrimaryColor = @location.baseColorPrimary.attribute("style")
+        @LocalLocSecondaryColor = @location.baseColorSecondary.attribute("style")
+        @LocalLocTertiaryColor = @location.baseColorTertiary.attribute("style")
+        puts "TC11: Retrieved local CMS colors"
+        puts "TC11: Comparing colors..."
+        if(@remoteLocPrimaryColor == @LocalLocPrimaryColor && @RemoteLocSecondaryColor == @LocalLocSecondaryColor && @RemoteLocTertiaryColor == @LocalLocTertiaryColor)
+            puts "TC11: Global Styles copied successfully"
+        else
+            puts "TC11 ERROR: Something went wrong, styles are not the same!"
+        end
+    end
 end
 
-testCase = TestCases.new(driver,wait,location)
+testCase = TestCases.new(driver,wait,location,client)
 testCase.runTC1(@newPageName)
 testCase.runTC2(@pageNameNewValue)
 testCase.runTC3(@pageTitleNewValue)
 testCase.runTC4(@pageDescNewValue)
 testCase.runTC5(@pageNameNewValue)
 testCase.runTC6()
+#TC7 NEEDS FIXING
 testCase.runTC7()
+testCase.runTC8(@remoteClient)
+testCase.runTC9(@url)
+testCase.runTC10(@url,@remoteClient)
+testCase.runTC11(@url,@remoteClient)
 driver.quit
-
-#TC8
-puts "***\nTC8: Starting..."
-location.btnSettingsLastNavParentPage.click
-location.tabImportLayout.click
-location.checkboxRemoteCMS.click
-sleep 5
-location.dropdownOneImportLayout.click
-location.dropdownContainsRemoteClient(@remoteClient).click
-sleep 5
-location.dropdownTwoPageImportLayout.click
-location.dropdownTwoPageImportLayoutFirstItem.click
-sleep 5
-location.dropdownThreePageImportLayout.click
-location.dropdownThreePageImportLayoutFirstItem.click
-location.btnImportLayout.click
-puts "TC8: Importing Page Layout from the a Remote CMS"
-location.btnModalConfirm.click
-wait.until{location.popUpSuccess}
-puts "TC8: Success Popup Shown"
-location.checkImporting(true)
-(location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
-location.checkImporting(true)
-puts "TC8: Page Imported Successfully"
-puts "TC8: Complete!"
-location.refreshAndNextTC()
-
-#TC9
-puts "***\nTC9: Starting..."
-driver.navigate.to(@url)
-sleep 5
-client.tabCopyWebsites.click
-client.dropdownOneCopyWebsite.click
-client.dropdownOneCopyWebsiteFirstItem.click
-client.checkboxTargetFirstWebsite.click
-client.btnConfirmCopyWebsite.click
-client.btnModalConfirm.click
-puts "TC9: Copying entire Website to Local Website"
-wait.until{client.popUpSuccess}
-puts "TC9: Success Popup Shown"
-client.checkImporting(false)
-(client.statusWebsite.text.include?('Updating')) ? (puts "TC9: Page is being copied") : (puts "TC9 ERROR: Page is not being copied!")
-client.checkImporting(true)
-puts "TC9: Page Copied Successfully"
-puts "TC9: Complete!"
-client.refreshAndNextTC()
-
-#TC10
-puts "***\nTC10: Starting..."
-client.tabCopyWebsites.click
-client.checkboxRemoteCMS.click
-sleep 5
-client.dropdownOneCopyWebsite.click
-client.dropdownContainsRemoteClient(@remoteClient).click
-sleep 5
-client.dropdownTwoCopyWebsite.click
-client.dropdownTwoCopyWebsiteFirstItem.click
-sleep 5
-client.checkboxTargetFirstWebsite.click
-client.btnConfirmCopyWebsite.click
-client.btnModalConfirm.click
-puts "TC10: Copying entire Remote Website to Local Website"
-wait.until{client.popUpSuccess}
-puts "TC10: Success Popup Shown"
-client.checkImporting(false)
-(client.statusWebsite.text.include?('Updating')) ? (puts "TC10: Page is being copied") : (puts "TC10 ERROR: Page is not being copied!")
-client.checkImporting(true)
-puts "TC10: Page Copied Successfully"
-puts "TC10: Complete!"
-client.refreshAndNextTC()
-
-#TC11
-puts "***\nTC11: Starting to check if styles copied successfully"
-@remoteCmsURL = client.getG5HubClientURL(@remoteClient)
-location.goToPage(@remoteCmsURL)
-client.btnEditFirstLocation.click
-sleep 5
-@remoteLocPrimaryColor = location.baseColorPrimary.attribute("style")
-@RemoteLocSecondaryColor = location.baseColorSecondary.attribute("style")
-@RemoteLocTertiaryColor = location.baseColorTertiary.attribute("style")
-puts "TC11: Retrieved remote CMS colors"
-location.goToPage(@cms)
-client.btnEditFirstLocation.click
-sleep 5
-@LocalLocPrimaryColor = location.baseColorPrimary.attribute("style")
-@LocalLocSecondaryColor = location.baseColorSecondary.attribute("style")
-@LocalLocTertiaryColor = location.baseColorTertiary.attribute("style")
-puts "TC11: Retrieved local CMS colors"
-puts "TC11: Comparing colors..."
-if(@remoteLocPrimaryColor == @LocalLocPrimaryColor && @RemoteLocSecondaryColor == @LocalLocSecondaryColor && @RemoteLocTertiaryColor == @LocalLocTertiaryColor)
-    puts "TC11: Global Styles copied successfully"
-else
-    puts "TC11 ERROR: Something went wrong, styles are not the same!"
-end
