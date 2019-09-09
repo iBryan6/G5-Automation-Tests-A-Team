@@ -5,16 +5,19 @@ require_relative "../PageObjects/Client/Clients.rb"
 require_relative "../PageObjects/Location/LocationPages.rb"
 
 #CHANGEABLE VARIABLES
-@url = 'https://g5-cms-5hq9qn3wg-javier-and-da.herokuapp.com/'
+##CLIENT AND LOCATION
+@url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
+@locationName = 'BRYAN TEST 3.0'
+@remoteClient = 'A1 U Store It'
+##TEST CASE PROPERTIES
 @newPageName = 'New Page Test'
 @pageNameNewValue = 'New Page Name'
 @pageTitleNewValue = 'New Page Title'
 @pageDescNewValue = 'New Page Description'
-@remoteClient = 'A1 U Store It'
 
 #SETUP
 driver = Selenium::WebDriver.for :chrome
-wait = Selenium::WebDriver::Wait.new(:timeout => 20)
+wait = Selenium::WebDriver::Wait.new(:timeout => 30)
 auth = LoginPage.new(driver)
 location = LocationPages.new(driver,wait)
 client = ClientPage.new(driver,wait)
@@ -30,7 +33,7 @@ puts "Login Successfully"
 
 #CLIENT LOCATION LIST
 puts "Starting Basic Functionalities"
-client.btnEditSecondLocation.click
+client.btnEditSelectedLoc(@locationName).click
 sleep 5
 
 #TEST CASES
@@ -54,9 +57,9 @@ class TestCases
         puts "TC1: Complete!"
         @location.refreshAndNextTC()
     end
-    def runTC2(pageNameNewValue)
+    def runTC2(pageNameNewValue, newPageName)
         puts "***\nTC2: Starting to change page name..."
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettingsNewPage(newPageName).click
         @location.inputPageName.clear
         @location.inputPageName.send_keys(pageNameNewValue)
         puts "TC2: Changing Page Name"
@@ -64,7 +67,7 @@ class TestCases
         @wait.until{@location.popUpSuccess}
         puts "TC2: Success Popup Shown"
         @location.refreshAndWait()
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettingsNewPage(pageNameNewValue).click
         @nameValue = @location.inputPageName.attribute('value')
         (@nameValue == pageNameNewValue) ? (puts "TC2: Name changed Successfully") : (puts "TC2 ERROR: Name wasn't changed!!")
         puts "TC2: Complete!"
@@ -268,9 +271,10 @@ class TestCases
 end
 
 testCase = TestCases.new(driver,wait,location,client)
-testCase.runTC1(@newPageName)
-testCase.runTC2(@pageNameNewValue)
 testCase.runTC3(@pageTitleNewValue)
+=begin
+testCase.runTC1(@newPageName)
+testCase.runTC2(@pageNameNewValue, @newPageName)
 testCase.runTC4(@pageDescNewValue)
 testCase.runTC5(@pageNameNewValue)
 testCase.runTC6()
@@ -278,5 +282,6 @@ testCase.runTC7()
 testCase.runTC8(@remoteClient)
 testCase.runTC9(@url)
 testCase.runTC10(@url,@remoteClient)
-testCase.runTC11(@url,@remoteClient)
+testCase.runTC11(@url,@remoteClient) 
+=end
 driver.quit
