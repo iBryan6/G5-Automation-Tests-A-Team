@@ -59,13 +59,9 @@ class LocationPages
     def btnSave
         return @driver.find_element(:xpath, "//button[.=' Save']")
     end
-    def btnSettingsNewPage(newPageName)
+    def btnSettings(newPageName)
         sleep 5
         return @driver.find_element(:xpath, "//span[.='#{newPageName}']/following-sibling::span/a[.=' Settings ']")
-    end
-    def btnSettingsFirstNavChildPage(pageNameNewValue)
-        sleep 5
-        return @driver.find_element(:xpath, "//span[.='#{pageNameNewValue}']/following-sibling::span/a[' Settings ']")
     end
     def btnImportLayout
         sleep 5
@@ -81,6 +77,7 @@ class LocationPages
         return @driver.find_element(:xpath, "//*[@class='input-field md-select ember-view']/div/input")
     end
     def dropdownParentChildPageItem
+        sleep 3
         return @driver.find_element(:xpath, "//div/div/div/ul/li[3]/span")
     end
     def dropdownParentChildPageNone
@@ -119,8 +116,8 @@ class LocationPages
     end
 
     #OTHERS
-    def statusIndividualLastNavPage
-        return @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']/li[last()]/div/div/div/div[2]/span[2]/span")
+    def pageStatus(pageName)
+        return @driver.find_element(:xpath, "//span[.='#{pageName}']/following-sibling::span/span")
     end
     def importingPageStatus
         return @driver.find_element(:css, "span.pulsate")
@@ -149,7 +146,7 @@ class LocationPages
     def checkImporting(status)
         while (is_element_present(:css, "span.pulsate") == status) do
             @driver.navigate.refresh
-            sleep 5
+            sleep 3
         end
     end
     def goToPage(url)

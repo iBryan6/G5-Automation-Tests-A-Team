@@ -59,7 +59,7 @@ class TestCases
     end
     def runTC2(pageNameNewValue, newPageName)
         puts "***\nTC2: Starting to change page name..."
-        @location.btnSettingsNewPage(newPageName).click
+        @location.btnSettings(newPageName).click
         @location.inputPageName.clear
         @location.inputPageName.send_keys(pageNameNewValue)
         puts "TC2: Changing Page Name"
@@ -67,15 +67,15 @@ class TestCases
         @wait.until{@location.popUpSuccess}
         puts "TC2: Success Popup Shown"
         @location.refreshAndWait()
-        @location.btnSettingsNewPage(pageNameNewValue).click
+        @location.btnSettings(pageNameNewValue).click
         @nameValue = @location.inputPageName.attribute('value')
         (@nameValue == pageNameNewValue) ? (puts "TC2: Name changed Successfully") : (puts "TC2 ERROR: Name wasn't changed!!")
         puts "TC2: Complete!"
         @location.refreshAndNextTC()
     end
-    def runTC3(pageTitleNewValue)
+    def runTC3(pageTitleNewValue, pageNameNewValue)
         puts "***\nTC3: Starting to change page title..."
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettings(pageNameNewValue).click
         @location.inputPageTitle.clear
         @location.inputPageTitle.send_keys(pageTitleNewValue)
         puts "TC3: Changing Page Title"
@@ -83,15 +83,15 @@ class TestCases
         @wait.until{@location.popUpSuccess}
         puts "TC3: Success Popup Shown"
         @location.refreshAndWait()
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettings(pageNameNewValue).click
         @titleValue = @location.inputPageTitle.attribute('value')
         (@titleValue == pageTitleNewValue) ? (puts "TC3: Title changed Successfully") : (puts "TC3 ERROR: Title wasn't changed!!")
         puts "TC3: Complete!"
         @location.refreshAndNextTC()
     end
-    def runTC4(pageDescNewValue)
+    def runTC4(pageDescNewValue, pageNameNewValue)
         puts "***\nTC4: Starting to change page description..."
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettings(pageNameNewValue).click
         @location.inputPageDescription.clear
         @location.inputPageDescription.send_keys(pageDescNewValue)
         puts "TC4: Changing Page Description"
@@ -99,7 +99,7 @@ class TestCases
         @wait.until{@location.popUpSuccess}
         puts "TC4: Success Popup Shown"
         @location.refreshAndWait()
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettings(pageNameNewValue).click
         @descriptionValue = @location.inputPageDescription.attribute('value')
         (@descriptionValue == pageDescNewValue) ? (puts "TC4: Description changed Successfully") : (puts "TC4 ERROR: Description wasn't changed!!")
         puts "TC4: Complete!"
@@ -107,7 +107,7 @@ class TestCases
     end
     def runTC5(pageNameNewValue)
         puts "***\nTC5: Starting to switch between child/parent page..."
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettings(pageNameNewValue).click
         @location.dropdownParentChildPage.click
         @location.dropdownParentChildPageItem.click
         @location.btnSave.click
@@ -116,7 +116,7 @@ class TestCases
         puts "TC5: Success Popup Shown"
         @location.refreshAndWait()
         (@location.pageTitleFirstChild.text.include?(pageNameNewValue)) ? (puts "TC5: Changed to a Child Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Child Page")
-        @location.btnSettingsFirstNavChildPage(pageNameNewValue).click
+        @location.btnSettings(pageNameNewValue).click
         @location.dropdownParentChildPage.click
         @location.dropdownParentChildPageNone.click
         @location.btnSave.click
@@ -128,32 +128,32 @@ class TestCases
         puts "TC5: Complete!"
         @location.refreshAndNextTC()
     end
-    def runTC6()
+    def runTC6(pageNameNewValue)
         puts "***\nTC6: Starting to switch between disabled/enabled page..."
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettings(pageNameNewValue).click
         @location.tooglePageStatus.click
         @location.btnSave.click
         puts "TC6: Changing Page Status to Disabled"
         @wait.until{@location.popUpSuccess}
         puts "TC6: Success Popup Shown"
         @location.refreshAndWait()
-        (@location.statusIndividualLastNavPage.text.include?('Disabled Page')) ? (puts "TC6: Page was Disabled Successfully") : (puts "TC6 ERROR: Page wasn't Disabled")
-        @location.btnSettingsLastNavParentPage.click
+        (@location.pageStatus(pageNameNewValue).text.include?('Disabled Page')) ? (puts "TC6: Page was Disabled Successfully") : (puts "TC6 ERROR: Page wasn't Disabled")
+        @location.btnSettings(pageNameNewValue).click
         @location.tooglePageStatus.click
         @location.btnSave.click
         puts "TC6: Changing Page Status to Enabled"
         @wait.until{@location.popUpSuccess}
         puts "TC6: Success Popup Shown"
         @location.refreshAndWait()
-        (@location.statusIndividualLastNavPage.text.include?('Disabled Page')) ? (puts "TC6 ERROR: Page wasn't Enabled Correctly") : (puts "TC6: Page was Enabled Successfully")
+        (@location.pageStatus(pageNameNewValue).text.include?('Disabled Page')) ? (puts "TC6 ERROR: Page wasn't Enabled Correctly") : (puts "TC6: Page was Enabled Successfully")
         puts "TC6: Complete!"
         @location.refreshAndNextTC()
     end
-    def runTC7()
+    def runTC7(pageNameNewValue)
         puts "***\nTC7: Starting to import page layout from same CMS..."
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettings(pageNameNewValue).click
         @location.tabImportLayout.click
-        sleep 5
+        sleep 3
         @location.dropdownOneImportLayout.click
         @location.dropdownOneImportLayoutFirstItem.click
         sleep 5
@@ -169,7 +169,6 @@ class TestCases
         @location.checkImporting(true)
         puts "TC7: Page Imported Successfully"
         puts "TC7: Complete!"
-        @location.refreshAndNextTC()
         @location.refreshAndNextTC()
     end
     def runTC8(remoteClient)
@@ -271,14 +270,16 @@ class TestCases
 end
 
 testCase = TestCases.new(driver,wait,location,client)
-testCase.runTC3(@pageTitleNewValue)
+testCase.runTC7(@pageNameNewValue)
+
 =begin
 testCase.runTC1(@newPageName)
 testCase.runTC2(@pageNameNewValue, @newPageName)
-testCase.runTC4(@pageDescNewValue)
+testCase.runTC3(@pageTitleNewValue, @pageNameNewValue)
+testCase.runTC4(@pageDescNewValue, @pageNameNewValue)
 testCase.runTC5(@pageNameNewValue)
-testCase.runTC6()
-testCase.runTC7()
+testCase.runTC6(@pageNameNewValue)
+testCase.runTC7(@pageNameNewValue)
 testCase.runTC8(@remoteClient)
 testCase.runTC9(@url)
 testCase.runTC10(@url,@remoteClient)
