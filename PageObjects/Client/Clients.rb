@@ -9,18 +9,15 @@ class ClientPage
     end
 
     #BUTTONS
-    def btnEditFirstLocation
-        return @driver.find_element(:xpath, "//ul[2]/li/div/div/div[2]/div[3]/a[@class='btn edit-button ember-view']/span")
-    end
-    def btnEditSecondLocation
-        return @driver.find_element(:xpath, "//ul[2]/li[2]/div/div/div[2]/div[3]/a[@class='btn edit-button ember-view']/span")
-    end
     def btnConfirmCopyWebsite
         return @driver.find_element(:xpath, "//div[5]/a")
     end
     def btnModalConfirm
         sleep 5
         return @driver.find_element(:css, "button.confirm")        
+    end
+    def btnEditSelectedLoc(selectedLoc)
+        return @driver.find_element(:xpath, "//span[text()='#{selectedLoc}']/../../../following-sibling::div/div[3]/a/span")
     end
     
     #TABS
