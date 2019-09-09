@@ -119,6 +119,7 @@ class LocationPages
     def pageStatus(pageName)
         return @driver.find_element(:xpath, "//span[.='#{pageName}']/following-sibling::span/span")
     end
+    #DELETE IF NEEDED importingPageStatus
     def importingPageStatus
         return @driver.find_element(:css, "span.pulsate")
     end

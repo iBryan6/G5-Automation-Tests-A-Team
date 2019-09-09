@@ -10,7 +10,7 @@ class ClientPage
 
     #BUTTONS
     def btnConfirmCopyWebsite
-        return @driver.find_element(:xpath, "//div[5]/a")
+        return @driver.find_element(:xpath, "//a[normalize-space(.)='Copy Website']")
     end
     def btnModalConfirm
         sleep 5
@@ -22,7 +22,7 @@ class ClientPage
     
     #TABS
     def tabCopyWebsites
-        return @driver.find_element(:xpath, "//div[2]/div[2]/span")
+        return @driver.find_element(:xpath, "//span[normalize-space(.)='Copy Website']")
     end
 
 
@@ -32,16 +32,16 @@ class ClientPage
     end
 
     #CHECKBOXES
-    def checkboxTargetFirstWebsite
-        return @driver.find_element(:xpath, "//p/div/label")
+    def checkboxTargetWebsite(location)
+        return @driver.find_element(:xpath, "//label[.='#{location}']")
     end
     def checkboxRemoteCMS
         return @driver.find_element(:xpath, "//div[4]/div/div/div/label")
     end
 
     #OTHERS
-    def statusWebsite
-        return @driver.find_element(:css, "span.pulsate")
+    def statusWebsite(location)
+        return @driver.find_element(:xpath, "//span[@class='name'][.='#{location}']/../../../following-sibling::div/div[2]/span")
     end
 
     #DROPDOWNS

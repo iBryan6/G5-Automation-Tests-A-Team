@@ -7,7 +7,7 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 #CHANGEABLE VARIABLES
 ##CLIENT AND LOCATION
 @url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
-@locationName = 'BRYAN TEST 3.0'
+@locationName = 'BRYAN TESTBED'
 @remoteClient = 'A1 U Store It'
 ##TEST CASE PROPERTIES
 @newPageName = 'New Page Test'
@@ -171,9 +171,9 @@ class TestCases
         puts "TC7: Complete!"
         @location.refreshAndNextTC()
     end
-    def runTC8(remoteClient)
+    def runTC8(remoteClient, pageNameNewValue)
         puts "***\nTC8: Starting to import page layout from remote CMS..."
-        @location.btnSettingsLastNavParentPage.click
+        @location.btnSettings(pageNameNewValue).click
         @location.tabImportLayout.click
         @location.checkboxRemoteCMS.click
         sleep 5
@@ -191,27 +191,27 @@ class TestCases
         @wait.until{@location.popUpSuccess}
         puts "TC8: Success Popup Shown"
         @location.checkImporting(false)
-        (@location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
+        (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
         @location.checkImporting(true)
         puts "TC8: Page Imported Successfully"
         puts "TC8: Complete!"
         @location.refreshAndNextTC()
     end
-    def runTC9(url)
+    def runTC9(url, locationName)
         puts "***\nTC9: Starting to clone entire location to same CMS..."
         @driver.navigate.to(url)
         sleep 5
         @client.tabCopyWebsites.click
         @client.dropdownOneCopyWebsite.click
         @client.dropdownOneCopyWebsiteFirstItem.click
-        @client.checkboxTargetFirstWebsite.click
+        @client.checkboxTargetWebsite(locationName).click
         @client.btnConfirmCopyWebsite.click
         @client.btnModalConfirm.click
         puts "TC9: Copying entire Website to Local Website"
         @wait.until{@client.popUpSuccess}
         puts "TC9: Success Popup Shown"
         @client.checkImporting(false)
-        (@client.statusWebsite.text.include?('Updating')) ? (puts "TC9: Page is being copied") : (puts "TC9 ERROR: Page is not being copied!")
+        (@client.statusWebsite(locationName).text.include?('Updating')) ? (puts "TC9: Page is being copied") : (puts "TC9 ERROR: Page is not being copied!")
         @client.checkImporting(true)
         puts "TC9: Page Copied Successfully"
         puts "TC9: Complete!"
@@ -230,7 +230,7 @@ class TestCases
         @client.dropdownTwoCopyWebsite.click
         @client.dropdownTwoCopyWebsiteFirstItem.click
         sleep 5
-        @client.checkboxTargetFirstWebsite.click
+        @client.checkboxTargetWebsite().click
         @client.btnConfirmCopyWebsite.click
         @client.btnModalConfirm.click
         puts "TC10: Copying entire Remote Website to Local Website"
@@ -270,7 +270,8 @@ class TestCases
 end
 
 testCase = TestCases.new(driver,wait,location,client)
-testCase.runTC7(@pageNameNewValue)
+testCase.runTC9(@url, @locationName)
+
 
 =begin
 testCase.runTC1(@newPageName)
@@ -280,8 +281,9 @@ testCase.runTC4(@pageDescNewValue, @pageNameNewValue)
 testCase.runTC5(@pageNameNewValue)
 testCase.runTC6(@pageNameNewValue)
 testCase.runTC7(@pageNameNewValue)
-testCase.runTC8(@remoteClient)
-testCase.runTC9(@url)
+testCase.runTC8(@remoteClient, @pageNameNewValue)
+testCase.runTC9(@url, @locationName)
+
 testCase.runTC10(@url,@remoteClient)
 testCase.runTC11(@url,@remoteClient) 
 =end
