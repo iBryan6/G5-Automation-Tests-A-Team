@@ -116,6 +116,7 @@ class TestCases
         puts "TC5: Success Popup Shown"
         @location.refreshAndWait()
         (@location.pageTitleFirstChild.text.include?(pageNameNewValue)) ? (puts "TC5: Changed to a Child Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Child Page")
+        sleep 5
         @location.btnSettings(pageNameNewValue).click
         @location.dropdownParentChildPage.click
         @location.dropdownParentChildPageNone.click
@@ -266,11 +267,14 @@ class TestCases
         else
             puts "TC11 ERROR: Something went wrong, styles are not the same!"
         end
+        puts "TC10: Complete!"
+        @client.refreshAndNextTC()
     end
 end
 
 testCase = TestCases.new(driver,wait,location,client)
 
+=begin
 testCase.runTC1(@newPageName)
 testCase.runTC2(@pageNameNewValue, @newPageName)
 testCase.runTC3(@pageTitleNewValue, @pageNameNewValue)
@@ -282,5 +286,5 @@ testCase.runTC8(@remoteClient, @pageNameNewValue)
 testCase.runTC9(@url, @locationName)
 testCase.runTC10(@url,@remoteClient,@locationName)
 testCase.runTC11(@url,@remoteClient,@locationName)
-
+=end
 driver.quit
