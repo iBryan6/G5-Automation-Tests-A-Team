@@ -217,8 +217,8 @@ class TestCases
         puts "TC9: Complete!"
         @client.refreshAndNextTC()
     end
-    def runTC10(url,remoteClient)
-        puts "***\nTC10: Starting to clone entire location to remote CMS..."
+    def runTC10(url,remoteClient,locationName)
+        puts "***\nTC10: Starting to clone entire location from remote CMS..."
         @driver.navigate.to(url)
         sleep 5
         @client.tabCopyWebsites.click
@@ -230,31 +230,31 @@ class TestCases
         @client.dropdownTwoCopyWebsite.click
         @client.dropdownTwoCopyWebsiteFirstItem.click
         sleep 5
-        @client.checkboxTargetWebsite().click
+        @client.checkboxTargetWebsite(locationName).click
         @client.btnConfirmCopyWebsite.click
         @client.btnModalConfirm.click
         puts "TC10: Copying entire Remote Website to Local Website"
         @wait.until{@client.popUpSuccess}
         puts "TC10: Success Popup Shown"
         @client.checkImporting(false)
-        (@client.statusWebsite.text.include?('Updating')) ? (puts "TC10: Page is being copied") : (puts "TC10 ERROR: Page is not being copied!")
+        (@client.statusWebsite(locationName).text.include?('Updating')) ? (puts "TC10: Page is being copied") : (puts "TC10 ERROR: Page is not being copied!")
         @client.checkImporting(true)
         puts "TC10: Page Copied Successfully"
         puts "TC10: Complete!"
         @client.refreshAndNextTC()
     end
-    def runTC11(url,remoteClient)
+    def runTC11(url,remoteClient,locationName)
         puts "***\nTC11: Starting to check if styles copied successfully..."
         @remoteCmsURL = @client.getG5HubClientURL(remoteClient)
         @location.goToPage(@remoteCmsURL)
-        @client.btnEditFirstLocation.click
+        @client.btnFirstLocEdit.click
         sleep 5
         @remoteLocPrimaryColor = @location.baseColorPrimary.attribute("style")
         @RemoteLocSecondaryColor = @location.baseColorSecondary.attribute("style")
         @RemoteLocTertiaryColor = @location.baseColorTertiary.attribute("style")
         puts "TC11: Retrieved remote CMS colors"
         @location.goToPage(url)
-        @client.btnEditFirstLocation.click
+        @client.btnEditSelectedLoc(locationName).click
         sleep 5
         @LocalLocPrimaryColor = @location.baseColorPrimary.attribute("style")
         @LocalLocSecondaryColor = @location.baseColorSecondary.attribute("style")
@@ -270,10 +270,7 @@ class TestCases
 end
 
 testCase = TestCases.new(driver,wait,location,client)
-testCase.runTC9(@url, @locationName)
 
-
-=begin
 testCase.runTC1(@newPageName)
 testCase.runTC2(@pageNameNewValue, @newPageName)
 testCase.runTC3(@pageTitleNewValue, @pageNameNewValue)
@@ -283,8 +280,7 @@ testCase.runTC6(@pageNameNewValue)
 testCase.runTC7(@pageNameNewValue)
 testCase.runTC8(@remoteClient, @pageNameNewValue)
 testCase.runTC9(@url, @locationName)
+testCase.runTC10(@url,@remoteClient,@locationName)
+testCase.runTC11(@url,@remoteClient,@locationName)
 
-testCase.runTC10(@url,@remoteClient)
-testCase.runTC11(@url,@remoteClient) 
-=end
 driver.quit

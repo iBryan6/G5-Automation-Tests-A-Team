@@ -16,8 +16,11 @@ class ClientPage
         sleep 5
         return @driver.find_element(:css, "button.confirm")        
     end
-    def btnEditSelectedLoc(selectedLoc)
-        return @driver.find_element(:xpath, "//span[text()='#{selectedLoc}']/../../../following-sibling::div/div[3]/a/span")
+    def btnEditSelectedLoc(location)
+        return @driver.find_element(:xpath, "//span[text()='#{location}']/../../../following-sibling::div/div[3]/a/span")
+    end
+    def btnFirstLocEdit
+        return @driver.find_element(:xpath, "//a/span[.='Edit']")
     end
     
     #TABS
@@ -33,7 +36,7 @@ class ClientPage
 
     #CHECKBOXES
     def checkboxTargetWebsite(location)
-        return @driver.find_element(:xpath, "//label[.='#{location}']")
+        return @driver.find_element(:xpath, "//label[contains(.,'#{location}')]")
     end
     def checkboxRemoteCMS
         return @driver.find_element(:xpath, "//div[4]/div/div/div/label")
