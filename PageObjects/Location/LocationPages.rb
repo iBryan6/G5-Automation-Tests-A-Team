@@ -63,6 +63,12 @@ class LocationPages
         sleep 5
         return @driver.find_element(:xpath, "//span[.='#{newPageName}']/following-sibling::span/a[.=' Settings ']")
     end
+    def btnSettingsFirstNavPage
+        return @driver.find_element(:xpath, "//h4[.='Navigation Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Settings']")
+    end
+    def btnSettingsFirstOtherPage
+        return @driver.find_element(:xpath, "//h4[.='Other Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Settings']")
+    end
     def btnImportLayout
         sleep 5
         return @driver.find_element(:xpath, "//a[@class='import-layout btn green ']")
@@ -70,6 +76,12 @@ class LocationPages
     def btnModalConfirm
         sleep 5
         return @driver.find_element(:css, "button.confirm")        
+    end
+    def btnEditFirstNavPage
+        return @driver.find_element(:xpath, "//h4[.='Navigation Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Edit']")
+    end
+    def btnEditFirstOtherPage
+        return @driver.find_element(:xpath, "//h4[.='Other Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Edit']")
     end
     
     #DROPDOWNS
@@ -153,5 +165,15 @@ class LocationPages
     def goToPage(url)
         @driver.navigate.to(url)
         sleep 5
+    end
+    def checkIfNavigationPagesExist
+        return @driver.find_element(:xpath, "//h4[.='Navigation Pages']/../following-sibling::div/div/ul/li").size()!=0
+    end
+    def checkPageStripeNum
+        i = 1
+        while (@driver.find_elements(:xpath, "//a[normalize-space(@class)='active']/../../../../following-sibling::div/div/div[#{i}]").count()!=0)
+            i+=1
+        end
+        return (i-1)
     end
 end

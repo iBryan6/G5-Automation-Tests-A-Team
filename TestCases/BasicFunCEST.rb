@@ -270,6 +270,44 @@ class TestCases
         puts "TC10: Complete!"
         @client.refreshAndNextTC()
     end
+    def runTC12(remoteClient, newPageName, url, locationName)
+        puts "***\nTC12: Starting to check content stripes..."
+        @remoteCmsURL = @client.getG5HubClientURL(remoteClient)
+        @location.goToPage(@remoteCmsURL)
+        @client.btnFirstLocEdit.click
+        sleep 5
+        if (@location.checkIfNavigationPagesExist() == true)
+            @location.btnSettingsFirstNavPage.click
+            sleep 5
+            @remoteLocStripeNum = @location.checkPageStripeNum
+        else
+            @location.btnSettingsFirstOtherPage.click
+            sleep 5
+            @remoteLocStripeNum = @location.checkPageStripeNum
+        end
+        puts "TC12: Retrieved remote location content stripes"
+        @location.goToPage(url)
+        @client.btnEditSelectedLoc(locationName).click
+        sleep 5
+        if (@location.checkIfNavigationPagesExist() == true)
+            @location.btnSettingsFirstNavPage.click
+            sleep 5
+            @LocStripeNum = @location.checkPageStripeNum
+        else
+            @location.btnSettingsFirstOtherPage.click
+            sleep 5
+            @LocStripeNum = @location.checkPageStripeNum
+        end
+        puts "TC12: Retrieved location content stripes"
+        puts "TC12: Comparing stripes..."
+        if(@LocStripeNum == @remoteLocStripeNum)
+            puts "TC12: Content Stripes copied correctly"
+        else
+            puts "TC12 ERROR: Something went wrong, stripes aren't the same!"
+        end
+        puts "TC12: Complete!"
+        @client.refreshAndNextTC()
+    end
 end
 
 testCase = TestCases.new(driver,wait,location,client)
@@ -286,5 +324,6 @@ testCase.runTC8(@remoteClient, @pageNameNewValue)
 testCase.runTC9(@url, @locationName)
 testCase.runTC10(@url,@remoteClient,@locationName)
 testCase.runTC11(@url,@remoteClient,@locationName)
+testCase.runTC12(@remoteClient, @newPageName, @url, @locationName)
 =end
 driver.quit
