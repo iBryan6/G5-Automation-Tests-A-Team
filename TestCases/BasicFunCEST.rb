@@ -115,6 +115,7 @@ class TestCases
         @wait.until{@location.popUpSuccess}
         puts "TC5: Success Popup Shown"
         @location.refreshAndWait()
+        sleep 3
         (@location.pageTitleFirstChild.text.include?(pageNameNewValue)) ? (puts "TC5: Changed to a Child Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Child Page")
         sleep 5
         @location.btnSettings(pageNameNewValue).click
@@ -311,6 +312,7 @@ class TestCases
 end
 
 testCase = TestCases.new(driver,wait,location,client)
+testCase.runTC5(@pageNameNewValue)
 
 =begin
 testCase.runTC1(@newPageName)
@@ -323,7 +325,8 @@ testCase.runTC7(@pageNameNewValue)
 testCase.runTC8(@remoteClient, @pageNameNewValue)
 testCase.runTC9(@url, @locationName)
 testCase.runTC10(@url,@remoteClient,@locationName)
+testCase.runTC11(@url,@remoteClient,@locationName)
 testCase.runTC12(@remoteClient, @newPageName, @url, @locationName)
 =end
-testCase.runTC11(@url,@remoteClient,@locationName)
+
 driver.quit
