@@ -166,15 +166,15 @@ class TestCases
         @location.btnModalConfirm.click
         @wait.until{@location.popUpSuccess}
         puts "TC7: Success Popup Shown"
-        @location.checkImporting(false)
-        (@location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
-        @location.checkImporting(true)
+        (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
+        @location.checkImporting(true, pageNameNewValue)
         puts "TC7: Page Imported Successfully"
         puts "TC7: Complete!"
         @location.refreshAndNextTC()
     end
     def runTC8(remoteClient, pageNameNewValue)
         puts "***\nTC8: Starting to import page layout from remote CMS..."
+        sleep 5
         @location.btnSettings(pageNameNewValue).click
         @location.tabImportLayout.click
         @location.checkboxRemoteCMS.click
@@ -192,9 +192,8 @@ class TestCases
         @location.btnModalConfirm.click
         @wait.until{@location.popUpSuccess}
         puts "TC8: Success Popup Shown"
-        @location.checkImporting(false)
         (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
-        @location.checkImporting(true)
+        @location.checkImporting(true, pageNameNewValue)
         puts "TC8: Page Imported Successfully"
         puts "TC8: Complete!"
         @location.refreshAndNextTC()
@@ -312,7 +311,8 @@ class TestCases
 end
 
 testCase = TestCases.new(driver,wait,location,client)
-testCase.runTC5(@pageNameNewValue)
+testCase.runTC7(@pageNameNewValue)
+testCase.runTC8(@remoteClient, @pageNameNewValue)
 
 =begin
 testCase.runTC1(@newPageName)

@@ -131,10 +131,6 @@ class LocationPages
     def pageStatus(pageName)
         return @driver.find_element(:xpath, "//span[.='#{pageName}']/following-sibling::span/span")
     end
-    #DELETE IF NEEDED importingPageStatus
-    def importingPageStatus
-        return @driver.find_element(:css, "span.pulsate")
-    end
     
     #METHODS
     def refreshAndWait
@@ -156,8 +152,9 @@ class LocationPages
         @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']").displayed?
         return result
     end
-    def checkImporting(status)
-        while (is_element_present(:css, "span.pulsate") == status) do
+    def checkImporting(status, pageName)
+        while (is_element_present(:xpath, "//span[.='#{pageName}']/following-sibling::span/span") == status) do
+            sleep 3
             @driver.navigate.refresh
             sleep 3
         end
