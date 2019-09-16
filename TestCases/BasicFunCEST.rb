@@ -22,6 +22,7 @@ auth = LoginPage.new(driver)
 location = LocationPages.new(driver,wait)
 client = ClientPage.new(driver,wait)
 driver.manage.window.maximize
+driver.manage.delete_all_cookies
 
 #LOGIN PAGE
 auth.goToPage(@url)
@@ -191,7 +192,8 @@ class TestCases
         @location.btnModalConfirm.click
         @wait.until{@location.popUpSuccess}
         puts "TC8: Success Popup Shown"
-        (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
+        @location.checkImporting(false, pageNameNewValue)
+        (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC8: Page is importing") : (puts "TC8 ERROR: Page is not importing!")
         @location.checkImporting(true, pageNameNewValue)
         puts "TC8: Page Imported Successfully"
         puts "TC8: Complete!"
@@ -266,7 +268,7 @@ class TestCases
         else
             puts "TC11 ERROR: Something went wrong, styles are not the same!"
         end
-        puts "TC10: Complete!"
+        puts "TC11: Complete!"
         @client.refreshAndNextTC()
     end
     def runTC12(remoteClient, newPageName, url, locationName)
@@ -311,10 +313,6 @@ end
 
 testCase = TestCases.new(driver,wait,location,client)
 
-testCase.runTC7(@pageNameNewValue)
-testCase.runTC8(@remoteClient, @pageNameNewValue)
-
-=begin
 testCase.runTC1(@newPageName)
 testCase.runTC2(@pageNameNewValue, @newPageName)
 testCase.runTC3(@pageTitleNewValue, @pageNameNewValue)
@@ -327,6 +325,7 @@ testCase.runTC9(@url, @locationName)
 testCase.runTC10(@url,@remoteClient,@locationName)
 testCase.runTC11(@url,@remoteClient,@locationName)
 testCase.runTC12(@remoteClient, @newPageName, @url, @locationName)
+=begin
 =end
 
 driver.quit

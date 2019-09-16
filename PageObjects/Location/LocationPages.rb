@@ -153,10 +153,10 @@ class LocationPages
         return result
     end
     def checkImporting(status, pageName)
-        while (is_element_present(:xpath, "//span[.='#{pageName}']/following-sibling::span/span") == status) do
-            sleep 3
+        while (is_element_present(:xpath, "//span[.='#{pageName}']/following-sibling::span/span/span") == status) do
+            sleep 5
             @driver.navigate.refresh
-            sleep 3
+            sleep 5
         end
     end
     def goToPage(url)
