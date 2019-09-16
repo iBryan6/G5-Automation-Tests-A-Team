@@ -6,8 +6,8 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 
 #CHANGEABLE VARIABLES
 ##CLIENT AND LOCATION
-@url = 'https://cms.g5marketingcloud.com/clients/g5-c-5g1te7c7n-byron/websites'
-@locationName = 'BRYAN TESTBED'
+@url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1gg0aea-johnny-s-rc-testing-storage/websites'
+@locationName = 'RC'
 @remoteClient = 'A1 U Store It'
 ##TEST CASE PROPERTIES
 @newPageName = 'New Page Test'
@@ -314,7 +314,7 @@ end
 testCase = TestCases.new(driver,wait,location,client)
 testCase.runTC5(@pageNameNewValue)
 
-=begin
+
 testCase.runTC1(@newPageName)
 testCase.runTC2(@pageNameNewValue, @newPageName)
 testCase.runTC3(@pageTitleNewValue, @pageNameNewValue)
@@ -327,6 +327,6 @@ testCase.runTC9(@url, @locationName)
 testCase.runTC10(@url,@remoteClient,@locationName)
 testCase.runTC11(@url,@remoteClient,@locationName)
 testCase.runTC12(@remoteClient, @newPageName, @url, @locationName)
-=end
+
 
 driver.quit
