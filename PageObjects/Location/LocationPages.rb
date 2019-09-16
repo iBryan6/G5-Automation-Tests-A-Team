@@ -63,6 +63,9 @@ class LocationPages
         sleep 5
         return @driver.find_element(:xpath, "//span[.='#{newPageName}']/following-sibling::span/a[.=' Settings ']")
     end
+    def btnPreviewFirstNavPage
+        return @driver.find_element(:xpath, "//h4[.='Navigation Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Preview']")
+    end
     def btnSettingsFirstNavPage
         return @driver.find_element(:xpath, "//h4[.='Navigation Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Settings']")
     end
@@ -83,6 +86,12 @@ class LocationPages
     def btnEditFirstOtherPage
         return @driver.find_element(:xpath, "//h4[.='Other Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Edit']")
     end
+    def btnUploadNewFilesIFU
+        return @driver.find_element(:xpath, "//div[@class='btn upload-files']/span")
+    end 
+    def btnSelectFilesIFU
+        return @driver.find_element(:xpath, "//div[@class='upload_button_holder']/input")
+    end 
     
     #DROPDOWNS
     def dropdownParentChildPage
@@ -117,9 +126,22 @@ class LocationPages
         return @driver.find_element(:xpath, "//span[contains(text(),'#{client}')]")
     end
 
+    #IMAGES
+    def imageFirstinPage
+        return @driver.find_element(:xpath, "//img[@class='u-photo']")
+    end
+
     #TOOGLES/SWITCHES
     def tooglePageStatus
         return @driver.find_element(:xpath, "//div[2]/div/p/div/label/span[2]")
+    end
+
+    #SIDENAV
+    def sideNav
+        return @driver.find_element(:xpath, "//div[@id='side-nav']/ul/li")
+    end
+    def sideNavIFU
+        return @driver.find_element(:xpath, "//span[.='Image & File Uploader']")
     end
 
     #POPUPS

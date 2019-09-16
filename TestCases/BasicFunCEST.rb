@@ -6,7 +6,7 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 
 #CHANGEABLE VARIABLES
 ##CLIENT AND LOCATION
-@url = 'https://content-management-system-content-staging.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
+@url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
 @locationName = 'BRYAN TESTBED'
 @remoteClient = 'A1 U Store It'
 ##TEST CASE PROPERTIES
@@ -27,7 +27,7 @@ driver.manage.delete_all_cookies
 #LOGIN PAGE
 auth.goToPage(@url)
 auth.typeEmail
-auth.typePassword
+auth.autoPassword
 wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
 puts "Login Successfully"
 
