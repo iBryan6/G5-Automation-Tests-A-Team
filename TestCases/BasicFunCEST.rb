@@ -6,13 +6,8 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 
 #CHANGEABLE VARIABLES
 ##CLIENT AND LOCATION
-<<<<<<< HEAD
 @url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1gg0aea-johnny-s-rc-testing-storage/websites'
 @locationName = 'RC'
-=======
-@url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
-@locationName = 'BRYAN TESTBED'
->>>>>>> a78e12c1adf706129b44737de5f115ec066aeaec
 @remoteClient = 'A1 U Store It'
 ##TEST CASE PROPERTIES
 @newPageName = 'New Page Test'
