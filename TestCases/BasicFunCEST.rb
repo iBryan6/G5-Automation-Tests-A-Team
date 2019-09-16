@@ -6,7 +6,7 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 
 #CHANGEABLE VARIABLES
 ##CLIENT AND LOCATION
-@url = 'https://cms.g5marketingcloud.com/clients/g5-c-5g1te7c7n-byron/websites'
+@url = 'https://content-management-system-content-staging.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
 @locationName = 'BRYAN TESTBED'
 @remoteClient = 'A1 U Store It'
 ##TEST CASE PROPERTIES
@@ -27,7 +27,6 @@ driver.manage.window.maximize
 auth.goToPage(@url)
 auth.typeEmail
 auth.typePassword
-auth.clickSubmit
 wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
 puts "Login Successfully"
 
@@ -166,7 +165,7 @@ class TestCases
         @location.btnModalConfirm.click
         @wait.until{@location.popUpSuccess}
         puts "TC7: Success Popup Shown"
-        (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
+        (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC7: Page is importing") : (puts "TC7 ERROR: Page is not importing!")
         @location.checkImporting(true, pageNameNewValue)
         puts "TC7: Page Imported Successfully"
         puts "TC7: Complete!"
@@ -174,7 +173,7 @@ class TestCases
     end
     def runTC8(remoteClient, pageNameNewValue)
         puts "***\nTC8: Starting to import page layout from remote CMS..."
-        sleep 5
+        sleep 10
         @location.btnSettings(pageNameNewValue).click
         @location.tabImportLayout.click
         @location.checkboxRemoteCMS.click
@@ -311,6 +310,7 @@ class TestCases
 end
 
 testCase = TestCases.new(driver,wait,location,client)
+
 testCase.runTC7(@pageNameNewValue)
 testCase.runTC8(@remoteClient, @pageNameNewValue)
 

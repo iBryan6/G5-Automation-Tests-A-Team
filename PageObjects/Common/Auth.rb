@@ -14,7 +14,9 @@ class LoginPage
     end
     #ADD YOUR G5 Password "have to find a better way to authenticate"
     def typePassword
-        return @driver.find_element(:id, "user_password").send_keys("6Mishteamo6")
+        puts "Type your G5 password:"
+        password = gets 
+        @driver.find_element(:id, "user_password").send_keys(password)
     end
     def clickSubmit
         return @driver.find_element(:xpath, "//*[@id='new_user']/button").click
