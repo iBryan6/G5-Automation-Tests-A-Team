@@ -15,34 +15,27 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 @pageTitleNewValue = 'New Page Title'
 @pageDescNewValue = 'New Page Description'
 
-#SETUP
-driver = Selenium::WebDriver.for :chrome
-wait = Selenium::WebDriver::Wait.new(:timeout => 30)
-auth = LoginPage.new(driver)
-location = LocationPages.new(driver,wait)
-client = ClientPage.new(driver,wait)
-driver.manage.window.maximize
-driver.manage.delete_all_cookies
-
-#LOGIN PAGE
-auth.goToPage(@url)
-auth.typeEmail
-auth.typePassword
-wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
-puts "Login Successfully"
-
-#CLIENT LOCATION LIST
-puts "Starting Basic Functionalities"
-client.btnEditSelectedLoc(@locationName).click
-sleep 5
-
 #TEST CASES
 class TestCases
-    def initialize(driver,wait,location,client)
-        @location = location
-        @driver = driver
-        @wait = wait
-        @client = client
+    def initialize(url, locationName)
+        #INIT
+        @driver = Selenium::WebDriver.for :chrome
+        @wait = Selenium::WebDriver::Wait.new(:timeout => 30)
+        @auth = LoginPage.new(@driver)
+        @location = LocationPages.new(@driver, @wait)
+        @client = ClientPage.new(@driver, @wait)
+        #BROWSER SETTINGS
+        @driver.manage.window.maximize
+        @driver.manage.delete_all_cookies
+        #LOGIN
+        @auth.goToPage(url)
+        @auth.typeEmail
+        @auth.typePassword
+        @wait.until{@driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
+        puts "***\nLogin Successfully, starting Basic Functionalities"
+        #START
+        @client.btnEditSelectedLoc(locationName).click
+        sleep 5
     end
     def runTC1(newPageName)
         puts "***\nTC1: Starting to create new page..."
@@ -311,7 +304,7 @@ class TestCases
     end
 end
 
-testCase = TestCases.new(driver,wait,location,client)
+testCase = TestCases.new(@url, @locationName)
 
 testCase.runTC1(@newPageName)
 testCase.runTC2(@pageNameNewValue, @newPageName)
@@ -325,7 +318,3 @@ testCase.runTC9(@url, @locationName)
 testCase.runTC10(@url,@remoteClient,@locationName)
 testCase.runTC11(@url,@remoteClient,@locationName)
 testCase.runTC12(@remoteClient, @newPageName, @url, @locationName)
-=begin
-=end
-
-driver.quit
