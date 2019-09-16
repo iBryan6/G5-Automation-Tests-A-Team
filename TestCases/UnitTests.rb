@@ -55,8 +55,7 @@ class TestCases
         @driver.action.move_to(@location.btnUploadNewFilesIFU).perform
         @location.btnUploadNewFilesIFU.click
         sleep 10
-        @driver.find_element(:xpath, "//div[@class='upload_button_holder']/a").click
-        @location.btnSelectFilesIFU.send_keys("C:/Users/bryan.argandona/Downloads/ImageTest.jpg")
+        @location.btnSelectFilesIFU.click
 
         sleep 15
     end

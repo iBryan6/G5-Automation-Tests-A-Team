@@ -90,7 +90,7 @@ class LocationPages
         return @driver.find_element(:xpath, "//div[@class='btn upload-files']/span")
     end 
     def btnSelectFilesIFU
-        return @driver.find_element(:xpath, "//div[@class='upload_button_holder']/input")
+        return @driver.find_element(:xpath, "//input[@class='cloudinary_fileupload']")
     end 
     
     #DROPDOWNS

@@ -27,7 +27,7 @@ driver.manage.delete_all_cookies
 #LOGIN PAGE
 auth.goToPage(@url)
 auth.typeEmail
-auth.autoPassword
+auth.typePassword
 wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
 puts "Login Successfully"
 

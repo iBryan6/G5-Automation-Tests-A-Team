@@ -9,12 +9,17 @@ class LoginPage
         return @driver.navigate.to url
     end
     #ADD YOUR G5 EMAIL
+    def autoEmail
+        @driver.find_element(:id, "user_email").send_keys("")
+    end
     def typeEmail
-        return @driver.find_element(:id, "user_email").send_keys("bryan.argandona-c@getg5.com")
+        puts "Type your G5 email:"
+        email = gets
+        @driver.find_element(:id, "user_email").send_keys(email)
     end
     #ADD YOUR G5 Password "have to find a better way to authenticate"
     def autoPassword
-        @driver.find_element(:id, "user_password").send_keys("G5rocksg5" + "\n")
+        @driver.find_element(:id, "user_password").send_keys("" + "\n")
     end
     def typePassword
         puts "Type your G5 password:"
