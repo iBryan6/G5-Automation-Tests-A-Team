@@ -313,10 +313,7 @@ end
 
 testCase = TestCases.new(driver,wait,location,client)
 
-<<<<<<< HEAD
 
-=======
->>>>>>> a78e12c1adf706129b44737de5f115ec066aeaec
 testCase.runTC1(@newPageName)
 testCase.runTC2(@pageNameNewValue, @newPageName)
 testCase.runTC3(@pageTitleNewValue, @pageNameNewValue)
@@ -329,11 +326,6 @@ testCase.runTC9(@url, @locationName)
 testCase.runTC10(@url,@remoteClient,@locationName)
 testCase.runTC11(@url,@remoteClient,@locationName)
 testCase.runTC12(@remoteClient, @newPageName, @url, @locationName)
-<<<<<<< HEAD
 
-=======
-=begin
-=end
->>>>>>> a78e12c1adf706129b44737de5f115ec066aeaec
 
 driver.quit
