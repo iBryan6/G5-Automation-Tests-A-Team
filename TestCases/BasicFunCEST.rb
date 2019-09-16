@@ -6,8 +6,13 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 
 #CHANGEABLE VARIABLES
 ##CLIENT AND LOCATION
+<<<<<<< HEAD
 @url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1gg0aea-johnny-s-rc-testing-storage/websites'
 @locationName = 'RC'
+=======
+@url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
+@locationName = 'BRYAN TESTBED'
+>>>>>>> a78e12c1adf706129b44737de5f115ec066aeaec
 @remoteClient = 'A1 U Store It'
 ##TEST CASE PROPERTIES
 @newPageName = 'New Page Test'
@@ -22,12 +27,12 @@ auth = LoginPage.new(driver)
 location = LocationPages.new(driver,wait)
 client = ClientPage.new(driver,wait)
 driver.manage.window.maximize
+driver.manage.delete_all_cookies
 
 #LOGIN PAGE
 auth.goToPage(@url)
 auth.typeEmail
 auth.typePassword
-auth.clickSubmit
 wait.until{driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
 puts "Login Successfully"
 
@@ -166,15 +171,15 @@ class TestCases
         @location.btnModalConfirm.click
         @wait.until{@location.popUpSuccess}
         puts "TC7: Success Popup Shown"
-        @location.checkImporting(false)
-        (@location.importingPageStatus.text.include?('Importing Layout...')) ? (puts "TC7: Page is importing Successfully") : (puts "TC7 ERROR: Page is not importing!")
-        @location.checkImporting(true)
+        (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC7: Page is importing") : (puts "TC7 ERROR: Page is not importing!")
+        @location.checkImporting(true, pageNameNewValue)
         puts "TC7: Page Imported Successfully"
         puts "TC7: Complete!"
         @location.refreshAndNextTC()
     end
     def runTC8(remoteClient, pageNameNewValue)
         puts "***\nTC8: Starting to import page layout from remote CMS..."
+        sleep 10
         @location.btnSettings(pageNameNewValue).click
         @location.tabImportLayout.click
         @location.checkboxRemoteCMS.click
@@ -192,9 +197,9 @@ class TestCases
         @location.btnModalConfirm.click
         @wait.until{@location.popUpSuccess}
         puts "TC8: Success Popup Shown"
-        @location.checkImporting(false)
-        (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC8: Page is importing Successfully") : (puts "TC8 ERROR: Page is not importing!")
-        @location.checkImporting(true)
+        @location.checkImporting(false, pageNameNewValue)
+        (@location.pageStatus(pageNameNewValue).text.include?('Importing Layout...')) ? (puts "TC8: Page is importing") : (puts "TC8 ERROR: Page is not importing!")
+        @location.checkImporting(true, pageNameNewValue)
         puts "TC8: Page Imported Successfully"
         puts "TC8: Complete!"
         @location.refreshAndNextTC()
@@ -268,7 +273,7 @@ class TestCases
         else
             puts "TC11 ERROR: Something went wrong, styles are not the same!"
         end
-        puts "TC10: Complete!"
+        puts "TC11: Complete!"
         @client.refreshAndNextTC()
     end
     def runTC12(remoteClient, newPageName, url, locationName)
@@ -312,9 +317,11 @@ class TestCases
 end
 
 testCase = TestCases.new(driver,wait,location,client)
-testCase.runTC5(@pageNameNewValue)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> a78e12c1adf706129b44737de5f115ec066aeaec
 testCase.runTC1(@newPageName)
 testCase.runTC2(@pageNameNewValue, @newPageName)
 testCase.runTC3(@pageTitleNewValue, @pageNameNewValue)
@@ -327,6 +334,11 @@ testCase.runTC9(@url, @locationName)
 testCase.runTC10(@url,@remoteClient,@locationName)
 testCase.runTC11(@url,@remoteClient,@locationName)
 testCase.runTC12(@remoteClient, @newPageName, @url, @locationName)
+<<<<<<< HEAD
 
+=======
+=begin
+=end
+>>>>>>> a78e12c1adf706129b44737de5f115ec066aeaec
 
 driver.quit

@@ -63,6 +63,9 @@ class LocationPages
         sleep 5
         return @driver.find_element(:xpath, "//span[.='#{newPageName}']/following-sibling::span/a[.=' Settings ']")
     end
+    def btnPreviewFirstNavPage
+        return @driver.find_element(:xpath, "//h4[.='Navigation Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Preview']")
+    end
     def btnSettingsFirstNavPage
         return @driver.find_element(:xpath, "//h4[.='Navigation Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Settings']")
     end
@@ -83,6 +86,12 @@ class LocationPages
     def btnEditFirstOtherPage
         return @driver.find_element(:xpath, "//h4[.='Other Pages']/../following-sibling::div/div/ul/li/div/div/div/div[@class='name']/span[@class='page-actions']/a[normalize-space(.)='Edit']")
     end
+    def btnUploadNewFilesIFU
+        return @driver.find_element(:xpath, "//div[@class='btn upload-files']/span")
+    end 
+    def btnSelectFilesIFU
+        return @driver.find_element(:xpath, "//input[@class='cloudinary_fileupload']")
+    end 
     
     #DROPDOWNS
     def dropdownParentChildPage
@@ -117,9 +126,22 @@ class LocationPages
         return @driver.find_element(:xpath, "//span[contains(text(),'#{client}')]")
     end
 
+    #IMAGES
+    def imageFirstinPage
+        return @driver.find_element(:xpath, "//img[@class='u-photo']")
+    end
+
     #TOOGLES/SWITCHES
     def tooglePageStatus
         return @driver.find_element(:xpath, "//div[2]/div/p/div/label/span[2]")
+    end
+
+    #SIDENAV
+    def sideNav
+        return @driver.find_element(:xpath, "//div[@id='side-nav']/ul/li")
+    end
+    def sideNavIFU
+        return @driver.find_element(:xpath, "//span[.='Image & File Uploader']")
     end
 
     #POPUPS
@@ -130,10 +152,6 @@ class LocationPages
     #OTHERS
     def pageStatus(pageName)
         return @driver.find_element(:xpath, "//span[.='#{pageName}']/following-sibling::span/span")
-    end
-    #DELETE IF NEEDED importingPageStatus
-    def importingPageStatus
-        return @driver.find_element(:css, "span.pulsate")
     end
     
     #METHODS
@@ -156,10 +174,11 @@ class LocationPages
         @driver.find_element(:xpath, "//ul[@class='collection pages z-depth-1 nav ember-view']").displayed?
         return result
     end
-    def checkImporting(status)
-        while (is_element_present(:css, "span.pulsate") == status) do
+    def checkImporting(status, pageName)
+        while (is_element_present(:xpath, "//span[.='#{pageName}']/following-sibling::span/span/span") == status) do
+            sleep 5
             @driver.navigate.refresh
-            sleep 3
+            sleep 5
         end
     end
     def goToPage(url)

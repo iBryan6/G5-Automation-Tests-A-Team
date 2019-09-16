@@ -22,6 +22,9 @@ class ClientPage
     def btnFirstLocEdit
         return @driver.find_element(:xpath, "//a/span[.='Edit']")
     end
+    def btnViewLocations
+        return @driver.find_element(:xpath, "//a[.='View Locations']")
+    end
     
     #TABS
     def tabCopyWebsites
@@ -42,6 +45,11 @@ class ClientPage
         return @driver.find_element(:xpath, "//div[4]/div/div/div/label")
     end
 
+    #TAG A LINK
+
+    def linkCorpDomain
+        return @driver.find_element(:xpath, "//td[@class='col col-corporate']/i[@aria-hidden='true']/../../td[@class='col col-domain']/a")
+    end
     #OTHERS
     def statusWebsite(location)
         return @driver.find_element(:xpath, "//span[@class='name'][.='#{location}']/../../../following-sibling::div/div[2]/span")
