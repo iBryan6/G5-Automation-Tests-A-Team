@@ -6,8 +6,8 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 
 #CHANGEABLE VARIABLES
 ##CLIENT AND LOCATION
-@url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1gg0aea-johnny-s-rc-testing-storage/websites'
-@locationName = 'RC'
+@url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
+@locationName = 'BRYAN TESTBED'
 @remoteClient = 'A1 U Store It'
 ##TEST CASE PROPERTIES
 @newPageName = 'New Page Test'
@@ -29,6 +29,8 @@ class TestCases
         @driver.manage.delete_all_cookies
         #LOGIN
         @auth.goToPage(url)
+        #@auth.autoEmail
+        #@auth.autoPassword
         @auth.typeEmail
         @auth.typePassword
         @wait.until{@driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
