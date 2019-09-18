@@ -29,8 +29,8 @@ class TestCases
         @driver.manage.delete_all_cookies
         #LOGIN
         @auth.goToPage(url)
-        #@auth.autoEmail
-        #@auth.autoPassword
+        #@auth.autoEmail("")
+        #@auth.autoPassword("")
         @auth.typeEmail
         @auth.typePassword
         @wait.until{@driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
