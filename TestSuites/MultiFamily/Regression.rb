@@ -8,5 +8,5 @@ require_relative "../../TestCases/BasicFunctionalities.rb"
 @remoteClient = 'Oakland Management Multifamily - Client'
 @locationName = 'BRYAN TESTBED'
 
-testSuite = TestCases.new(@cms, @locationName)
-testSuite.runAll(@cms, @remoteClient, @locationName)
+basicTestSuite = BasicFunctionalities.new(@cms, @locationName)
+basicTestSuite.runAll(@cms, @remoteClient, @locationName)

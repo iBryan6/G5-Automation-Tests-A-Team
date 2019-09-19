@@ -5,7 +5,7 @@ require_relative "../PageObjects/Client/Clients.rb"
 require_relative "../PageObjects/Location/LocationPages.rb"
 
 #TEST CASES
-class TestCases
+class BasicFunctionalities
     def initialize(url, locationName)
         #INIT
         @driver = Selenium::WebDriver.for :chrome
@@ -103,7 +103,7 @@ class TestCases
         @wait.until{@location.popUpSuccess}
         puts "TC5: Success Popup Shown"
         @location.refreshAndWait()
-        sleep 3
+        sleep 5
         (@location.pageTitleFirstChild.text.include?(@pageNameNewValue)) ? (puts "TC5: Changed to a Child Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Child Page")
         sleep 5
         @location.btnSettings(@pageNameNewValue).click
@@ -264,7 +264,7 @@ class TestCases
         @remoteCmsURL = @client.getG5HubClientURL(remoteClient)
         @location.goToPage(@remoteCmsURL)
         @client.btnFirstLocEdit.click
-        sleep 10
+        sleep 5
         puts "TC12: Retrieving remote location content stripes"
         if (@location.checkIfNavigationPagesExist() == true)
             @location.btnSettingsFirstNavPage.click
@@ -278,7 +278,7 @@ class TestCases
         puts "TC12: Retrieved remote location content stripes"
         @location.goToPage(url)
         @client.btnEditSelectedLoc(locationName).click
-        sleep 10
+        sleep 5
         puts "TC12: Retrieving location content stripes"
         if (@location.checkIfNavigationPagesExist() == true)
             @location.btnSettingsFirstNavPage.click
