@@ -24,8 +24,8 @@ class BasicFunctionalities
         @driver.manage.delete_all_cookies
         #LOGIN
         @auth.goToPage(url)
-        @auth.autoEmail("bryan.argandona-c@getg5.com")
-        @auth.autoPassword("6Mishteamo6")
+        @auth.typeEmail()
+        @auth.typePassword()
         @wait.until{@driver.find_element(:xpath, "//ul[@class='collection locations']/li")}
         puts "***\nLogin Successfully, starting Basic Functionalities"
         #START
@@ -279,6 +279,7 @@ class BasicFunctionalities
         @location.goToPage(url)
         @client.btnEditSelectedLoc(locationName).click
         sleep 5
+        @driver.execute_script("window.scrollTo(0, 0)")
         puts "TC12: Retrieving location content stripes"
         if (@location.checkIfNavigationPagesExist() == true)
             @location.btnSettingsFirstNavPage.click
