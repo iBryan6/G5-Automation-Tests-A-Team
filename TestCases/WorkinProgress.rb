@@ -6,7 +6,7 @@ require_relative "../PageObjects/Location/LocationPages.rb"
 
 #CHANGEABLE VARIABLES
 ##CLIENT AND LOCATION
-@url = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
+@url = 'https://content-management-system-content-staging.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
 @remoteClient = 'A1 U Store It'
 @locationName = 'BRYAN TESTBED'
 
