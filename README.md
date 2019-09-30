@@ -18,7 +18,7 @@ Selenium Webdriver Automation test solution for G5.
 
 ### Widgets
 
-* Floor plans plus full test (FPP.rb)
+* Floor plans plus full test (FPP.rb) - WIP
 
 ## Run Tests
 
