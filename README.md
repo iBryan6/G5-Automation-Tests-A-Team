@@ -1,9 +1,9 @@
 # G5 Automation Tests
-Selenium Webdriver Automation tests solution for G5.
+Selenium Webdriver Automation test solution for G5.
 
 ## Current Version
 
-1.0.1
+0.3.1
 
 ## Requirements
 
@@ -13,12 +13,12 @@ Selenium Webdriver Automation tests solution for G5.
 
 ### Release Candidate
 
-1. Regression Testing of Basic Functionalities (Regression.rb)
-2. Smoke Testing of Basic Functionalities (Smoke.rb)
+* Regression Testing of Basic Functionalities (Regression.rb)
+* Smoke Testing of Basic Functionalities (Smoke.rb)
 
 ### Widgets
 
-1. Floor plans plus full test (FPP.rb)
+* Floor plans plus full test (FPP.rb)
 
 ## Run Tests
 
@@ -45,9 +45,15 @@ Selenium Webdriver Automation tests solution for G5.
 
 ### Changing environment variables
 
+(IN PROGRESS)
+
 ### Creating new test cases
 
+(IN PROGRESS)
+
 ### Understanding POM
+
+(IN PROGRESS)
 
 ## Authors
 
