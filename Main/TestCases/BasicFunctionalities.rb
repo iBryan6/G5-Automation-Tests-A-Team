@@ -282,7 +282,6 @@ class BasicFunctionalities
             @remoteLocStripeNum = @location.checkPageStripeNum
         end
         puts "TC12: Retrieved remote location content stripes"
-        puts @remoteLocStripeNum
         @location.goToPage(url)
         @client.btnEditSelectedLoc(locationName).click
         sleep 5
@@ -298,7 +297,6 @@ class BasicFunctionalities
             @LocStripeNum = @location.checkPageStripeNum
         end
         puts "TC12: Retrieved location content stripes"
-        puts @LocStripeNum
         puts "TC12: Comparing stripes..."
         if(@LocStripeNum == @remoteLocStripeNum)
             puts "TC12: Content Stripes copied correctly"
