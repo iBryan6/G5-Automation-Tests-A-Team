@@ -143,12 +143,14 @@ class BasicFunctionalities
         puts "***\nTC7: Starting to import page layout from same CMS..."
         @location.btnSettings(@pageNameNewValue).click
         @location.tabImportLayout.click
-        sleep 3
-        @location.dropdownOneImportLayout.click
-        @location.dropdownOneImportLayoutFirstItem.click
         sleep 5
-        @location.dropdownTwoPageImportLayout.click
-        @location.dropdownTwoPageImportLayoutFirstItem.click
+        @location.dropdownSelectLocation.click
+        sleep 5
+        @location.dropdownSelectLocationFirstItem.click
+        sleep 5
+        @location.dropdownSelectPage.click
+        sleep 5
+        @location.dropdownSelectPageFirstItem.click
         @location.btnImportLayout.click
         puts "TC7: Importing Page Layout from the same CMS"
         @location.btnModalConfirm.click
@@ -165,16 +167,18 @@ class BasicFunctionalities
         sleep 10
         @location.btnSettings(@pageNameNewValue).click
         @location.tabImportLayout.click
-        @location.checkboxRemoteCMS.click
         sleep 5
-        @location.dropdownOneImportLayout.click
+        @location.dropdownSelectClient.click
+        sleep 5
         @location.dropdownContainsRemoteClient(remoteClient).click
         sleep 5
-        @location.dropdownTwoPageImportLayout.click
-        @location.dropdownTwoPageImportLayoutFirstItem.click
+        @location.dropdownSelectLocation.click
         sleep 5
-        @location.dropdownThreePageImportLayout.click
-        @location.dropdownThreePageImportLayoutFirstItem.click
+        @location.dropdownSelectLocationFirstItem.click
+        sleep 5
+        @location.dropdownSelectPage.click
+        sleep 5
+        @location.dropdownSelectPageFirstItem.click
         @location.btnImportLayout.click
         puts "TC8: Importing Page Layout from the a Remote CMS"
         @location.btnModalConfirm.click
@@ -188,22 +192,24 @@ class BasicFunctionalities
         @location.refreshAndNextTC()
     end
     def runTC9(url, locationName)
-        puts "***\nTC9: Starting to clone entire location to same CMS..."
+        puts "***\nTC9: Starting to clone entire location from the same CMS..."
         @driver.navigate.to(url)
         sleep 5
         @client.tabCopyWebsites.click
-        @client.dropdownOneCopyWebsite.click
-        @client.dropdownOneCopyWebsiteFirstItem.click
+        sleep 5
+        @client.dropdownSourceLocation.click
+        sleep 5
+        @client.dropdownSourceLocationFirstItem.click
         @client.checkboxTargetWebsite(locationName).click
         @client.btnConfirmCopyWebsite.click
         @client.btnModalConfirm.click
-        puts "TC9: Copying entire Website to Local Website"
+        puts "TC9: Copying entire Local Location..."
         @wait.until{@client.popUpSuccess}
         puts "TC9: Success Popup Shown"
         @client.checkImporting(false)
-        (@client.statusWebsite(locationName).text.include?('Updating')) ? (puts "TC9: Page is being copied") : (puts "TC9 ERROR: Page is not being copied!")
+        (@client.statusWebsite(locationName).text.include?('Updating')) ? (puts "TC9: Location is being copied") : (puts "TC9 ERROR: Location is not being copied!")
         @client.checkImporting(true)
-        puts "TC9: Page Copied Successfully"
+        puts "TC9: Location Copied Successfully"
         puts "TC9: Complete!"
         @client.refreshAndNextTC()
     end
@@ -212,24 +218,24 @@ class BasicFunctionalities
         @driver.navigate.to(url)
         sleep 5
         @client.tabCopyWebsites.click
-        @client.checkboxRemoteCMS.click
         sleep 5
-        @client.dropdownOneCopyWebsite.click
+        @client.dropdownSourceClient.click
+        sleep 5
         @client.dropdownContainsRemoteClient(remoteClient).click
         sleep 5
-        @client.dropdownTwoCopyWebsite.click
-        @client.dropdownTwoCopyWebsiteFirstItem.click
+        @client.dropdownSourceLocation.click
         sleep 5
+        @client.dropdownSourceLocationFirstItem.click
         @client.checkboxTargetWebsite(locationName).click
         @client.btnConfirmCopyWebsite.click
         @client.btnModalConfirm.click
-        puts "TC10: Copying entire Remote Website to Local Website"
+        puts "TC10: Copying entire Remote Location..."
         @wait.until{@client.popUpSuccess}
         puts "TC10: Success Popup Shown"
         @client.checkImporting(false)
-        (@client.statusWebsite(locationName).text.include?('Updating')) ? (puts "TC10: Page is being copied") : (puts "TC10 ERROR: Page is not being copied!")
+        (@client.statusWebsite(locationName).text.include?('Updating')) ? (puts "TC10: Location is being copied") : (puts "TC10 ERROR: Location is not being copied!")
         @client.checkImporting(true)
-        puts "TC10: Page Copied Successfully"
+        puts "TC10: Location Copied Successfully"
         puts "TC10: Complete!"
         @client.refreshAndNextTC()
     end
@@ -276,6 +282,7 @@ class BasicFunctionalities
             @remoteLocStripeNum = @location.checkPageStripeNum
         end
         puts "TC12: Retrieved remote location content stripes"
+        puts @remoteLocStripeNum
         @location.goToPage(url)
         @client.btnEditSelectedLoc(locationName).click
         sleep 5
@@ -291,6 +298,7 @@ class BasicFunctionalities
             @LocStripeNum = @location.checkPageStripeNum
         end
         puts "TC12: Retrieved location content stripes"
+        puts @LocStripeNum
         puts "TC12: Comparing stripes..."
         if(@LocStripeNum == @remoteLocStripeNum)
             puts "TC12: Content Stripes copied correctly"

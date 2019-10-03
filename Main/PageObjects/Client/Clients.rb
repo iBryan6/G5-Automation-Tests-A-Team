@@ -41,12 +41,8 @@ class ClientPage
     def checkboxTargetWebsite(location)
         return @driver.find_element(:xpath, "//label[contains(.,'#{location}')]")
     end
-    def checkboxRemoteCMS
-        return @driver.find_element(:xpath, "//div[4]/div/div/div/label")
-    end
 
     #TAG A LINK
-
     def linkCorpDomain
         return @driver.find_element(:xpath, "//td[@class='col col-corporate']/i[@aria-hidden='true']/../../td[@class='col col-domain']/a")
     end
@@ -56,17 +52,17 @@ class ClientPage
     end
 
     #DROPDOWNS
-    def dropdownOneCopyWebsite
-        return @driver.find_element(:xpath, "//div[3]/div/div/input")
+    def dropdownSourceClient
+        return @driver.find_element(:xpath, "//div[4]/div/div/div[2]/div[1]/div/input")
     end
-    def dropdownOneCopyWebsiteFirstItem
-        return @driver.find_element(:xpath, "//div[3]/div/div/ul/li[2]/span")
+    def dropdownSourceClientFirstItem
+        return @driver.find_element(:xpath, "//div[4]/div/div/div[2]/div[1]/div/ul/li[2]/span")
     end
-    def dropdownTwoCopyWebsite
-        return @driver.find_element(:xpath, "//div[3]/div[2]/div/input")
+    def dropdownSourceLocation
+        return @driver.find_element(:xpath, "//div[4]/div/div/div[2]/div[2]/div/input")
     end
-    def dropdownTwoCopyWebsiteFirstItem
-        return @driver.find_element(:xpath, "//div[3]/div[2]/div/ul/li[2]/span")
+    def dropdownSourceLocationFirstItem
+        return @driver.find_element(:xpath, "//div[4]/div/div/div[2]/div[2]/div/ul/li[2]/span")
     end
 
     def dropdownContainsRemoteClient(client)

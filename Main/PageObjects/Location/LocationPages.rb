@@ -37,9 +37,6 @@ class LocationPages
     end
 
     #CHECKBOXES
-    def checkboxRemoteCMS
-        return @driver.find_element(:xpath, "//div[2]/div/div[2]/div/label")
-    end
 
     #BASECOLORS
     def baseColorPrimary
@@ -104,23 +101,23 @@ class LocationPages
     def dropdownParentChildPageNone
         return @driver.find_element(:xpath, "//div/div/div/ul/li[2]/span")
     end
-    def dropdownOneImportLayout
+    def dropdownSelectClient
+        return @driver.find_element(:xpath, "//div[2]/div[2]/div/input")
+    end
+    def dropdownSelectClientFirstItem
+        return @driver.find_element(:xpath, "//div[2]/div/ul/li[2]/span")
+    end
+    def dropdownSelectLocation
         return @driver.find_element(:xpath, "//div[2]/div[3]/div/input")
     end
-    def dropdownOneImportLayoutFirstItem
+    def dropdownSelectLocationFirstItem
         return @driver.find_element(:xpath, "//div[3]/div/ul/li[2]/span")
     end
-    def dropdownTwoPageImportLayout
+    def dropdownSelectPage
         return @driver.find_element(:xpath, "//div[2]/div[4]/div/input")
     end
-    def dropdownTwoPageImportLayoutFirstItem
+    def dropdownSelectPageFirstItem
         return @driver.find_element(:xpath, "//div[4]/div/ul/li[2]/span")
-    end
-    def dropdownThreePageImportLayout
-        return @driver.find_element(:xpath, "//div[2]/div[5]/div/input")
-    end
-    def dropdownThreePageImportLayoutFirstItem
-        return @driver.find_element(:xpath, "//div[5]/div/ul/li[2]/span")
     end
     def dropdownContainsRemoteClient(client)
         return @driver.find_element(:xpath, "//span[contains(text(),'#{client}')]")

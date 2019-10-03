@@ -38,10 +38,13 @@ class FloorPlanPlus
     def amenitiesTitleInput
         return @driver.find_element(:xpath, "//input[@placeholder='Ready to make the move?']")
     end
-    def leaseTermsCTAHeading
+    def leaseTermsCTAHeadingInput
         return @driver.find_element(:xpath, "//input[@placeholder='Apartment Amenities']")
     end
-    def showVirtualTourLink
+    def showVirtualTourLinkCheckbox
         return @driver.find_element(:xpath, "//label[.='Show Virtual Tour Link']/../input[@type='checkbox']")
+    end
+    def virtualTourInput
+        return @driver.find_element(:xpath, "//input[@placeholder='Virtual Tour']")
     end
 end
