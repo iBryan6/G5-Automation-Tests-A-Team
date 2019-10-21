@@ -19,8 +19,11 @@ class ClientPage
     def btnEditSelectedLoc(location)
         return @driver.find_element(:xpath, "//span[text()='#{location}']/../../../following-sibling::div/div[3]/a/span")
     end
-    def btnFirstLocEdit
+    def btnCorpLocEdit
         return @driver.find_element(:xpath, "//a/span[.='Edit']")
+    end
+    def btnFirstLocEdit
+        return @driver.find_element(:xpath, "//ul[2]/li[2]/div/div/div[2]/div[3]/a[1]/span")
     end
     def btnViewLocations
         return @driver.find_element(:xpath, "//a[.='View Locations']")
