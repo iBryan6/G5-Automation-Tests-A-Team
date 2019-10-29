@@ -243,7 +243,7 @@ class BasicFunctionalities
         puts "***\nTC11: Starting to check if styles copied successfully..."
         @remoteCmsURL = @client.getG5HubClientURL(remoteClient)
         @location.goToPage(@remoteCmsURL)
-        @client.btnFirstLocEdit.click
+        @client.btnCorpLocEdit.click
         sleep 5
         @remoteLocPrimaryColor = @location.baseColorPrimary.attribute("style")
         @RemoteLocSecondaryColor = @location.baseColorSecondary.attribute("style")
@@ -269,7 +269,7 @@ class BasicFunctionalities
         puts "***\nTC12: Starting to check content stripes..."
         @remoteCmsURL = @client.getG5HubClientURL(remoteClient)
         @location.goToPage(@remoteCmsURL)
-        @client.btnFirstLocEdit.click
+        @client.btnCorpLocEdit.click
         sleep 5
         puts "TC12: Retrieving remote location content stripes"
         if (@location.checkIfNavigationPagesExist() == true)

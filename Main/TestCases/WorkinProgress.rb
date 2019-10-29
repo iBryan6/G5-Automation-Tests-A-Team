@@ -4,14 +4,13 @@ require_relative "../PageObjects/Common/Auth.rb"
 require_relative "../PageObjects/Client/Clients.rb"
 require_relative "../PageObjects/Location/LocationPages.rb"
 
-#CHANGEABLE VARIABLES
-##CLIENT AND LOCATION
-@url = 'https://cms.g5marketingcloud.com/clients/g5-c-5g1te7c7n-byron/websites'
-@remoteClient = 'A1 U Store It'
+
+@cms = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
+@remoteClient = 'Apartment Management Professionals'
 @locationName = 'BRYAN TESTBED'
 
 #TEST CASES
-class TestCases
+class BasicFunctionalities
     def initialize(url, locationName)
         #INIT
         @driver = Selenium::WebDriver.for :chrome
@@ -65,6 +64,84 @@ class TestCases
         @nameValue = @location.inputPageName.attribute('value')
         (@nameValue == @pageNameNewValue) ? (puts "TC2: Name changed Successfully") : (puts "TC2 ERROR: Name wasn't changed!!")
         puts "TC2: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC3
+        puts "***\nTC3: Starting to change page title..."
+        @location.btnSettings(@pageNameNewValue).click
+        @location.inputPageTitle.clear
+        @location.inputPageTitle.send_keys(@pageTitleNewValue)
+        puts "TC3: Changing Page Title"
+        @location.btnSave.click
+        @wait.until{@location.popUpSuccess}
+        puts "TC3: Success Popup Shown"
+        @location.refreshAndWait()
+        @location.btnSettings(@pageNameNewValue).click
+        @titleValue = @location.inputPageTitle.attribute('value')
+        (@titleValue == @pageTitleNewValue) ? (puts "TC3: Title changed Successfully") : (puts "TC3 ERROR: Title wasn't changed!!")
+        puts "TC3: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC4
+        puts "***\nTC4: Starting to change page description..."
+        @location.btnSettings(@pageNameNewValue).click
+        @location.inputPageDescription.clear
+        @location.inputPageDescription.send_keys(@pageDescNewValue)
+        puts "TC4: Changing Page Description"
+        @location.btnSave.click
+        @wait.until{@location.popUpSuccess}
+        puts "TC4: Success Popup Shown"
+        @location.refreshAndWait()
+        @location.btnSettings(@pageNameNewValue).click
+        @descriptionValue = @location.inputPageDescription.attribute('value')
+        (@descriptionValue == @pageDescNewValue) ? (puts "TC4: Description changed Successfully") : (puts "TC4 ERROR: Description wasn't changed!!")
+        puts "TC4: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC5
+        puts "***\nTC5: Starting to switch between child/parent page..."
+        @location.btnSettings(@pageNameNewValue).click
+        @location.dropdownParentChildPage.click
+        @location.dropdownParentChildPageItem.click
+        @location.btnSave.click
+        puts "TC5: Changing to a Child Page"
+        @wait.until{@location.popUpSuccess}
+        puts "TC5: Success Popup Shown"
+        @location.refreshAndWait()
+        sleep 5
+        (@location.pageTitleFirstChild.text.include?(@pageNameNewValue)) ? (puts "TC5: Changed to a Child Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Child Page")
+        sleep 5
+        @location.btnSettings(@pageNameNewValue).click
+        @location.dropdownParentChildPage.click
+        @location.dropdownParentChildPageNone.click
+        @location.btnSave.click
+        puts "TC5: Changing to a Parent Page"
+        @wait.until{@location.popUpSuccess}
+        puts "TC5: Success Popup Shown"
+        @location.refreshAndWait()
+        (@location.pageTitleLastParent.text.include?(@pageNameNewValue)) ? (puts "TC5: Changed to a Parent Page Successfully") : (puts "TC5 ERROR: Page wasn't changed to a Parent Page")
+        puts "TC5: Complete!"
+        @location.refreshAndNextTC()
+    end
+    def runTC6
+        puts "***\nTC6: Starting to switch between disabled/enabled page..."
+        @location.btnSettings(@pageNameNewValue).click
+        @location.tooglePageStatus.click
+        @location.btnSave.click
+        puts "TC6: Changing Page Status to Disabled"
+        @wait.until{@location.popUpSuccess}
+        puts "TC6: Success Popup Shown"
+        @location.refreshAndWait()
+        (@location.pageStatus(@pageNameNewValue).text.include?('Disabled Page')) ? (puts "TC6: Page was Disabled Successfully") : (puts "TC6 ERROR: Page wasn't Disabled")
+        @location.btnSettings(@pageNameNewValue).click
+        @location.tooglePageStatus.click
+        @location.btnSave.click
+        puts "TC6: Changing Page Status to Enabled"
+        @wait.until{@location.popUpSuccess}
+        puts "TC6: Success Popup Shown"
+        @location.refreshAndWait()
+        (@location.pageStatus(@pageNameNewValue).text.include?('Disabled Page')) ? (puts "TC6 ERROR: Page wasn't Enabled Correctly") : (puts "TC6: Page was Enabled Successfully")
+        puts "TC6: Complete!"
         @location.refreshAndNextTC()
     end
     def runTC7
@@ -171,7 +248,7 @@ class TestCases
         puts "***\nTC11: Starting to check if styles copied successfully..."
         @remoteCmsURL = @client.getG5HubClientURL(remoteClient)
         @location.goToPage(@remoteCmsURL)
-        @client.btnFirstLocEdit.click
+        @client.btnCorpLocEdit.click
         sleep 5
         @remoteLocPrimaryColor = @location.baseColorPrimary.attribute("style")
         @RemoteLocSecondaryColor = @location.baseColorSecondary.attribute("style")
@@ -197,7 +274,7 @@ class TestCases
         puts "***\nTC12: Starting to check content stripes..."
         @remoteCmsURL = @client.getG5HubClientURL(remoteClient)
         @location.goToPage(@remoteCmsURL)
-        @client.btnFirstLocEdit.click
+        @client.btnCorpLocEdit.click
         sleep 5
         puts "TC12: Retrieving remote location content stripes"
         if (@location.checkIfNavigationPagesExist() == true)
@@ -234,16 +311,30 @@ class TestCases
         puts "TC12: Complete!"
         @client.refreshAndNextTC()
     end
+    def runAll(url,remoteClient,locationName)
+        runTC1()
+        runTC2()
+        runTC3()
+        runTC4()
+        runTC5()
+        runTC6()
+        runTC7()
+        runTC8(remoteClient)
+        runTC9(url, locationName)
+        runTC10(url,remoteClient,locationName)
+        runTC11(url,remoteClient,locationName)
+        runTC12(url,remoteClient,locationName)
+    end
 end
 
-basicTestSuite = TestCases.new(@url, @locationName)
+basicTestSuite = BasicFunctionalities.new(@cms, @locationName)
 =begin
 basicTestSuite.runTC1()
 basicTestSuite.runTC2()
 basicTestSuite.runTC7()
 basicTestSuite.runTC8(@remoteClient)
-basicTestSuite.runTC9(@url, @locationName)
-basicTestSuite.runTC11(@url,@remoteClient,@locationName)
-basicTestSuite.runTC12(@url,@remoteClient,@locationName)
+basicTestSuite.runTC9(@cms, @locationName)
+basicTestSuite.runTC10(@cms, @remoteClient, @locationName)
 =end
-basicTestSuite.runTC10(@url,@remoteClient,@locationName)
+basicTestSuite.runTC11(@cms, @remoteClient, @locationName)
+basicTestSuite.runTC12(@cms, @remoteClient, @locationName)
