@@ -67,6 +67,9 @@ class ClientPage
     def dropdownSourceLocationFirstItem
         return @driver.find_element(:xpath, "//div[4]/div/div/div[2]/div[2]/div/ul/li[2]/span")
     end
+    def dropdownSourceLocationCorp
+        return @driver.find_element(:xpath, "//div[2]/div/ul/li/span[contains(text(),'Corp')]")
+    end
 
     def dropdownContainsRemoteClient(client)
         return @driver.find_element(:xpath, "//span[contains(text(),'#{client}')]")

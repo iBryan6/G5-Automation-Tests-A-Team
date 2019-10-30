@@ -5,8 +5,8 @@ require_relative "../PageObjects/Client/Clients.rb"
 require_relative "../PageObjects/Location/LocationPages.rb"
 
 
-@cms = 'https://content-management-system-content-prime.g5devops.com/clients/g5-c-5g1te7c7n-byron/websites'
-@remoteClient = 'Apartment Management Professionals'
+@cms = 'https://cms.g5marketingcloud.com/clients/g5-c-5g1te7c7n-byron/websites'
+@remoteClient = 'A1 U Store It'
 @locationName = 'BRYAN TESTBED'
 
 #TEST CASES
@@ -230,7 +230,7 @@ class BasicFunctionalities
         sleep 5
         @client.dropdownSourceLocation.click
         sleep 5
-        @client.dropdownSourceLocationFirstItem.click
+        @client.dropdownSourceLocationCorp.click
         @client.checkboxTargetWebsite(locationName).click
         @client.btnConfirmCopyWebsite.click
         @client.btnModalConfirm.click
@@ -334,7 +334,7 @@ basicTestSuite.runTC2()
 basicTestSuite.runTC7()
 basicTestSuite.runTC8(@remoteClient)
 basicTestSuite.runTC9(@cms, @locationName)
-basicTestSuite.runTC10(@cms, @remoteClient, @locationName)
 =end
+basicTestSuite.runTC10(@cms, @remoteClient, @locationName)
 basicTestSuite.runTC11(@cms, @remoteClient, @locationName)
 basicTestSuite.runTC12(@cms, @remoteClient, @locationName)

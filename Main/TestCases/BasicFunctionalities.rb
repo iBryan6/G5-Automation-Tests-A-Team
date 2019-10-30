@@ -225,7 +225,7 @@ class BasicFunctionalities
         sleep 5
         @client.dropdownSourceLocation.click
         sleep 5
-        @client.dropdownSourceLocationFirstItem.click
+        @client.dropdownSourceLocationCorp.click
         @client.checkboxTargetWebsite(locationName).click
         @client.btnConfirmCopyWebsite.click
         @client.btnModalConfirm.click
